@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 namespace CSharpTutorials
 {
     public class User
@@ -9,6 +10,10 @@ namespace CSharpTutorials
         {
             this.username = username;
             this.password = password;
+        }
+        public virtual void ToString()
+        {
+            Console.WriteLine($"username : {username} | password : {password}");
         }
     }
     public class Dorm
@@ -25,6 +30,11 @@ namespace CSharpTutorials
             this.capacity = capacity;
             this.dormboss = dormboss;
             this.blocks = blocks;
+        }
+        public virtual void ToString()
+        {
+            Console.WriteLine($"name : {name} | address : {address} | capacity : {capacity} | dormboss : {dormboss}");
+            Console.Write("blocks : "); foreach (string i in blocks) Console.Write($"{i} ");
         }
     }
     public class Block
@@ -139,7 +149,7 @@ namespace CSharpTutorials
     }
     class Program
     {
-        static void Login(List<User> user, List<Dormboss> dormboss, List<Blockboss> blockboss, List<Student> student)
+        static void Login(List<User> user)
         {
             while (true)
             {
@@ -155,39 +165,36 @@ namespace CSharpTutorials
                 string a = Console.ReadLine();
                 string b = Console.ReadLine();
                 User c = new User(a, b);
-                Dormboss d = new Dormboss(a, null, null, null, null, null);
-                Blockboss e = new Blockboss(a, null, null, null, null, 0, null, null, null, null);
-                Student f = new Student(a, null, null, null, null, 0, null, null, null);
 
-                if (user.Contains(c) && dormboss.Contains(d))
+                if (user.Contains(c))
                 {
-
-                }
-                else if (user.Contains(c) && blockboss.Contains(e))
-                {
-
-                }
-                else if (user.Contains(c) && student.Contains(f))
-                {
-
+                    managementpage();
+                    break;
                 }
                 else
                 {
                     return;
                 }
-
             }
         }
-        static void signup()
+        static void signup(List<User> user)
         {
             while (true)
             {
                 Console.Clear();
                 Console.WriteLine(" --------------------------------");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
+                Console.WriteLine("|                                |");
+                Console.WriteLine("|           Username:            |");
+                Console.WriteLine("|                                |");
+                Console.WriteLine("|           Password:            |");
+                Console.WriteLine("|                                |");
+                Console.WriteLine(" --------------------------------");
+
+                string a = Console.ReadLine();
+                string b = Console.ReadLine();
+                User c = new User(a, b);
+                user.Add(c);
+                return;
             }
         }
         static void dormbosspage()
@@ -215,6 +222,19 @@ namespace CSharpTutorials
             }
         }
         static void studentpage()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("");
+                Console.WriteLine("");
+                Console.WriteLine("");
+                Console.WriteLine("");
+                Console.WriteLine("");
+            }
+
+        }
+        static void managementpage()
         {
             while (true)
             {
@@ -295,9 +315,9 @@ namespace CSharpTutorials
             List<User> user = new List<User>();
 
             List<Dorm> dorm = new List<Dorm>();
-            List<Block> blocks = new List<Block>();
+            List<Block> block = new List<Block>();
             List<Room> room = new List<Room>();
-            List<Equipments> equipments = new List<Equipments>();
+            List<Equipments> equipment = new List<Equipments>();
             List<Person> person = new List<Person>();
             List<Dormboss> doormboss = new List<Dormboss>();
             List<Student> student = new List<Student>();
@@ -317,22 +337,26 @@ namespace CSharpTutorials
                 Console.WriteLine("|[Choose an option (1-3)]        |");
                 Console.WriteLine(" -------------------------------- ");
                 var x = Console.ReadKey();
+                Console.WriteLine();
+
                 switch (x.KeyChar)
                 {
                     case '1':
-                        Login(user, doormboss, blockboss, student);
+                        Login(user);
                         break;
                     case '2':
-
+                        signup(user);
                         break;
                     case '3':
-
-                        break;
+                        Console.WriteLine("Goodbye!");
+                        return;
                     dafault:
                         Console.WriteLine("Invalid choice, try again.");
                         break;
                 }
+
             }
+            foreach (var item in user) item.ToString();
         }
     }
 }
