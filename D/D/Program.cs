@@ -21,6 +21,14 @@ namespace CSharpTutorials
             Console.WriteLine($"username : {username} | password : {password}");
             Console.WriteLine();
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is User other)
+            {
+                return this.username == other.username && this.password == other.password;
+            }
+            return false;
+        }
     }
     public class Dorm
     {
@@ -43,6 +51,14 @@ namespace CSharpTutorials
             Console.Write("blocks : "); foreach (string i in blocks) Console.Write($"{i} ");
             Console.WriteLine();
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is Dorm other)
+            {
+                return this.name == other.name && this.address == other.address && this.capacity == other.capacity && this.dormboss == other.dormboss && this.blocks == other.blocks;
+            }
+            return false;
+        }
     }
     public class Block
     {
@@ -64,6 +80,14 @@ namespace CSharpTutorials
             Console.WriteLine($"name : {name} | level : {level} | roomno : {roomno} | blockboss : {blockboss}");
             Console.Write("rooms : "); foreach (string i in rooms) Console.Write($"{i} ");
             Console.WriteLine();
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is Block other)
+            {
+                return this.name == other.name && this.level == other.level && this.roomno == other.roomno && this.blockboss == other.blockboss && this.rooms == other.rooms;
+            }
+            return false;
         }
     }
     public class Room
@@ -96,8 +120,16 @@ namespace CSharpTutorials
             Console.Write("residentialstudents : "); foreach (string i in residentialstudents) Console.Write($"{i} ");
             Console.WriteLine();
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is Room other)
+            {
+                return this.number == other.number && this.level == other.level && this.capacity == other.capacity && this.equipments == other.equipments && this.residentialstudents == other.residentialstudents && this.block == other.block;
+            }
+            return false;
+        }
     }
-    public class Equipments
+    public class Equipment
     {
         public string[] belongings { set; get; }
         public int number { set; get; }
@@ -110,7 +142,7 @@ namespace CSharpTutorials
         public string status { set; get; }
         public string room { set; get; }
         public string student { set; get; }
-        public Equipments(string[] belongings, int number, string belongingid, string status, string room, string student)
+        public Equipment(string[] belongings, int number, string belongingid, string status, string room, string student)
         {
             this.belongings = belongings;
             this.number = n;
@@ -124,6 +156,14 @@ namespace CSharpTutorials
             Console.WriteLine($"number : {number} | belongingid : {belongingid} | status : {status} | room : {room} | student : {student}");
             Console.Write("equipments : "); foreach (string i in belongings) Console.Write($"{i} ");
             Console.WriteLine();
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is Equipment other)
+            {
+                return this.belongings == other.belongings && this.number == other.number && this.belongingid == other.belongingid && this.status == other.status && this.room == other.room && this.student == other.student;
+            }
+            return false;
         }
     }
     public class Person
@@ -143,6 +183,14 @@ namespace CSharpTutorials
         {
             Console.WriteLine($"fullname : {fullname} | id : {id} | phonenumber : {phonenumber} | address : {address} ");
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is Person other)
+            {
+                return this.fullname == other.fullname && this.id == other.id && this.phonenumber == other.phonenumber && this.address == other.address;
+            }
+            return false;
+        }
     }
     public class Dormboss : Person
     {
@@ -158,6 +206,14 @@ namespace CSharpTutorials
             base.info();
             Console.WriteLine($"| rank : {rank} | dorm : {dorm}");
             Console.WriteLine();
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is Dormboss other)
+            {
+                return this.fullname == other.fullname && this.id == other.id && this.phonenumber == other.phonenumber && this.address == other.address && this.rank == other.rank && this.dorm == other.dorm;
+            }
+            return false;
         }
     }
     public class Student : Person
@@ -182,6 +238,14 @@ namespace CSharpTutorials
             Console.Write("personalequipments : "); foreach (string i in personalequipments) Console.Write($"{i} ");
             Console.WriteLine();
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is Student other)
+            {
+                return this.fullname == other.fullname && this.id == other.id && this.phonenumber == other.phonenumber && this.address == other.address && this.studentid == other.studentid && this.room == other.room && this.block == other.block && this.dorm == other.dorm && this.personalequipments == other.personalequipments;
+            }
+            return false;
+        }
     }
     public class Blockboss : Student
     {
@@ -196,31 +260,48 @@ namespace CSharpTutorials
             Console.WriteLine($"rank : {rank}");
             Console.WriteLine();
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is Blockboss other)
+            {
+                return this.fullname == other.fullname && this.id == other.id && this.phonenumber == other.phonenumber && this.address == other.address && this.studentid == other.studentid && this.room == other.room && this.block == other.block && this.dorm == other.dorm && this.personalequipments == other.personalequipments && this.rank == other.rank;
+            }
+            return false;
+        }
     }
     class Program
     {
-        static void Login(List<User> user)
+        static void Login(List<User> user, List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
         {
-            Console.Clear();
-            Console.WriteLine(" --------------------------------");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("|           Username:            |");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("|           Password:            |");
-            Console.WriteLine("|                                |");
-            Console.WriteLine(" --------------------------------");
-
-            string a = Console.ReadLine();
-            string b = Console.ReadLine();
-            User c = new User(a, b);
-            if (user.Contains(c))
+            while (true)
             {
-                managementpage();
-                Console.WriteLine("kkkkkkkkkk");
-            }
-            else
-            {
-                return;
+                Console.Clear();
+                Console.WriteLine(" --------------------------------");
+                Console.WriteLine("|                                |");
+                Console.WriteLine("|           Username:            |");
+                Console.WriteLine("|                                |");
+                Console.WriteLine("|           Password:            |");
+                Console.WriteLine("|                                |");
+                Console.WriteLine(" --------------------------------");
+                string a = Console.ReadLine();
+                string b = Console.ReadLine();
+                User temp = new User(a, b);
+                if (user.Contains(temp))
+                {
+                    managementpage(dorm, block, room, equipment, person, dormboss, student, blockboss);
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine(user.Count);
+                    foreach (User i in user)
+                    {
+                        i.info();
+                    }
+                    Console.WriteLine("Account not found, try again later.");
+                    Console.ReadKey();
+                    return;
+                }
             }
         }
         static void signup(List<User> user)
@@ -235,12 +316,25 @@ namespace CSharpTutorials
                 Console.WriteLine("|           Password:            |");
                 Console.WriteLine("|                                |");
                 Console.WriteLine(" --------------------------------");
-
                 string a = Console.ReadLine();
                 string b = Console.ReadLine();
+
+                if (a == "" || b == "")
+                {
+                    Console.WriteLine("Error");
+                    Console.ReadKey();
+                    break;
+                }
                 User c = new User(a, b);
-                user.Add(c);
-                return;
+                if (user.Contains(c))
+                {
+                    break;
+                }
+                else
+                {
+                    user.Add(c);
+                    return;
+                }
             }
         }
         static void dormbosspage()
@@ -278,9 +372,8 @@ namespace CSharpTutorials
                 Console.WriteLine("");
                 Console.WriteLine("");
             }
-
         }
-        static void managementpage()
+        static void managementpage(List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
         {
             while (true)
             {
@@ -290,6 +383,30 @@ namespace CSharpTutorials
                 Console.WriteLine("");
                 Console.WriteLine("");
                 Console.WriteLine("");
+                var x = Console.ReadKey();
+                switch (x.KeyChar)
+                {
+                    case '1':
+                        dormmanagement();
+                        break;
+                    case '2':
+                        blockmanagement();
+                        break;
+                    case '3':
+                        personalmanagement();
+                        break;
+                    case '4':
+                        belongingsmanagement();
+                        break;
+                    case '5':
+                        viewreport();
+                        break;
+                    case '6':
+                        return;
+                    default:
+                        Console.WriteLine("Invalid choice, please try again.");
+                        break;
+                }
             }
         }
         static void dormmanagement()
@@ -352,20 +469,17 @@ namespace CSharpTutorials
                 Console.WriteLine("");
             }
         }
-
         static void Main(string[] args)
         {
-            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.BackgroundColor = ConsoleColor.White;
             Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine(Console.ForegroundColor);
             List<User> user = new List<User>();
-
             List<Dorm> dorm = new List<Dorm>();
             List<Block> block = new List<Block>();
             List<Room> room = new List<Room>();
-            List<Equipments> equipment = new List<Equipments>();
+            List<Equipment> equipment = new List<Equipment>();
             List<Person> person = new List<Person>();
-            List<Dormboss> doormboss = new List<Dormboss>();
+            List<Dormboss> dormboss = new List<Dormboss>();
             List<Student> student = new List<Student>();
             List<Blockboss> blockboss = new List<Blockboss>();
             while (true)
@@ -383,24 +497,22 @@ namespace CSharpTutorials
                 Console.WriteLine("|[Choose an option (1-3)]        |");
                 Console.WriteLine(" -------------------------------- ");
                 var x = Console.ReadKey();
-                Console.WriteLine();
-
                 switch (x.KeyChar)
                 {
                     case '1':
-                        Login(user);
+                        Login(user, dorm, block, room, equipment, person, dormboss, student, blockboss);
                         break;
                     case '2':
                         signup(user);
                         break;
                     case '3':
+                        Console.Clear();
                         Console.WriteLine("Goodbye!");
                         return;
                     dafault:
                         Console.WriteLine("Invalid choice, try again.");
                         break;
                 }
-
             }
         }
     }
