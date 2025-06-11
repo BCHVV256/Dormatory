@@ -271,21 +271,30 @@ namespace CSharpTutorials
     }
     class Program
     {
-        static void Login(List<User> user, List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
+        static async void Login(List<User> user, List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
         {
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(" --------------------------------");
-                Console.WriteLine("|                                |");
-                Console.WriteLine("|           Username:            |");
-                Console.WriteLine("|                                |");
-                Console.WriteLine("|           Password:            |");
-                Console.WriteLine("|                                |");
-                Console.WriteLine(" --------------------------------");
+                Console.WriteLine("  --------------------------------");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine(" |           Username:            |");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine("  --------------------------------");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine(" |           Password:            |");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine("  --------------------------------");
                 string a = Console.ReadLine();
                 string b = Console.ReadLine();
                 User temp = new User(a, b);
+
+                if (a == "" || b == "")
+                {
+                    Console.WriteLine("Error! Going back.");
+                    Console.ReadKey();
+                    break;
+                }
                 if (user.Contains(temp))
                 {
                     managementpage(dorm, block, room, equipment, person, dormboss, student, blockboss);
@@ -293,11 +302,6 @@ namespace CSharpTutorials
                 }
                 else
                 {
-                    Console.WriteLine(user.Count);
-                    foreach (User i in user)
-                    {
-                        i.info();
-                    }
                     Console.WriteLine("Account not found, try again later.");
                     Console.ReadKey();
                     return;
@@ -309,19 +313,21 @@ namespace CSharpTutorials
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(" --------------------------------");
-                Console.WriteLine("|                                |");
-                Console.WriteLine("|           Username:            |");
-                Console.WriteLine("|                                |");
-                Console.WriteLine("|           Password:            |");
-                Console.WriteLine("|                                |");
-                Console.WriteLine(" --------------------------------");
+                Console.WriteLine("  --------------------------------");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine(" |           Username:            |");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine("  --------------------------------");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine(" |           Password:            |");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine("  --------------------------------");
                 string a = Console.ReadLine();
                 string b = Console.ReadLine();
 
                 if (a == "" || b == "")
                 {
-                    Console.WriteLine("Error");
+                    Console.WriteLine("Error! Going back.");
                     Console.ReadKey();
                     break;
                 }
@@ -377,12 +383,32 @@ namespace CSharpTutorials
         {
             while (true)
             {
+                Console.BackgroundColor = ConsoleColor.DarkBlue;
+                Console.ForegroundColor = ConsoleColor.Black;
                 Console.Clear();
-                Console.WriteLine("==============================");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
+                Console.WriteLine("     --------------------------------------------------");
+                Console.WriteLine("    /                                                  \\                _____");
+                Console.WriteLine("   /                  Management page                   \\              /     \\");
+                Console.WriteLine("  /                                                      \\            | . .   |");
+                Console.WriteLine("  --------------------------------------------------------             \\ .   /");
+                Console.WriteLine(" |                                                        |             -----");
+                Console.WriteLine(" |  ----------------------------------------------------  |");
+                Console.WriteLine(" | |    1.Dorm management     |   2.Block management    | |");
+                Console.WriteLine(" |  ----------------------------------------------------  |");
+                Console.WriteLine(" |                                                        |");
+                Console.WriteLine(" |  ----------------------------------------------------  |");
+                Console.WriteLine(" | |  3.personal management   | 4.Belongings management | |");
+                Console.WriteLine(" |  ----------------------------------------------------  |");
+                Console.WriteLine(" |                                                        |");
+                Console.WriteLine(" |  ----------------------------------------------------  |");
+                Console.WriteLine(" | |      5.View report       |        6.Return         | |");
+                Console.WriteLine(" |  ----------------------------------------------------  |");
+                Console.WriteLine(" |                                                        |");
+                Console.WriteLine(" |                                        ___             |");
+                Console.WriteLine(" |       [Pick a number from (1-6)]      |   |            |");
+                Console.WriteLine(" |                                       |.  |            |");
+                Console.WriteLine(" |                                       |   |            |");
+                Console.WriteLine("  -------------------------------------------------------- ");
                 var x = Console.ReadKey();
                 switch (x.KeyChar)
                 {
@@ -411,6 +437,8 @@ namespace CSharpTutorials
         }
         static void dormmanagement()
         {
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.Black;
             while (true)
             {
                 Console.Clear();
@@ -423,6 +451,8 @@ namespace CSharpTutorials
         }
         static void blockmanagement()
         {
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.Black;
             while (true)
             {
                 Console.Clear();
@@ -435,6 +465,8 @@ namespace CSharpTutorials
         }
         static void personalmanagement()
         {
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.Black;
             while (true)
             {
                 Console.Clear();
@@ -447,6 +479,8 @@ namespace CSharpTutorials
         }
         static void belongingsmanagement()
         {
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.Black;
             while (true)
             {
                 Console.Clear();
@@ -459,6 +493,8 @@ namespace CSharpTutorials
         }
         static void viewreport()
         {
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.Black;
             while (true)
             {
                 Console.Clear();
@@ -482,20 +518,21 @@ namespace CSharpTutorials
             List<Dormboss> dormboss = new List<Dormboss>();
             List<Student> student = new List<Student>();
             List<Blockboss> blockboss = new List<Blockboss>();
+
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(" --------------------------------");
-                Console.WriteLine("|                                |");
-                Console.WriteLine("|      Dormitory Management      |");
-                Console.WriteLine("|                                |");
-                Console.WriteLine(" -------------------------------- ");
-                Console.WriteLine("|            1.Log in            |");
-                Console.WriteLine("|            2.Sign up           |");
-                Console.WriteLine("|            3.Exit              |");
-                Console.WriteLine("|                                |");
-                Console.WriteLine("|[Choose an option (1-3)]        |");
-                Console.WriteLine(" -------------------------------- ");
+                Console.WriteLine("  --------------------------------");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine(" |      Dormitory Management      |");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine("  -------------------------------- ");
+                Console.WriteLine(" |            1.Log in            |");
+                Console.WriteLine(" |            2.Sign up           |");
+                Console.WriteLine(" |            3.Exit              |");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine(" |[Choose an option (1-3)]        |");
+                Console.WriteLine("  -------------------------------- ");
                 var x = Console.ReadKey();
                 switch (x.KeyChar)
                 {
@@ -517,4 +554,4 @@ namespace CSharpTutorials
         }
     }
 }
-// 
+/**/
