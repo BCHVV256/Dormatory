@@ -271,7 +271,7 @@ namespace CSharpTutorials
     }
     class Program
     {
-        static async void Login(List<User> user, List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
+        static async void Login(List<User> user, List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Equipment> repair, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
         {
             while (true)
             {
@@ -297,7 +297,7 @@ namespace CSharpTutorials
                 }
                 if (user.Contains(temp))
                 {
-                    managementpage(dorm, block, room, equipment, person, dormboss, student, blockboss);
+                    managementpage(dorm, block, room, equipment, repair, person, dormboss, student, blockboss);
                     break;
                 }
                 else
@@ -343,43 +343,7 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void dormbosspage()
-        {
-            while (true)
-            {
-                Console.Clear();
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-            }
-        }
-        static void blockbosspage()
-        {
-            while (true)
-            {
-                Console.Clear();
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-            }
-        }
-        static void studentpage()
-        {
-            while (true)
-            {
-                Console.Clear();
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-            }
-        }
-        static void managementpage(List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
+        static void managementpage(List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Equipment> repair, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
         {
             while (true)
             {
@@ -413,19 +377,19 @@ namespace CSharpTutorials
                 switch (x.KeyChar)
                 {
                     case '1':
-                        dormmanagement();
+                        dormmanagement(dorm);
                         break;
                     case '2':
-                        blockmanagement();
+                        blockmanagement(block, student, blockboss);
                         break;
                     case '3':
-                        personalmanagement();
+                        personalmanagement(student, dormboss, blockboss);
                         break;
                     case '4':
-                        belongingsmanagement();
+                        belongingsmanagement(equipment, room, student, repair);
                         break;
                     case '5':
-                        viewreport();
+                        viewreport(dorm, block, room, equipment, repair, person, dormboss, student, blockboss);
                         break;
                     case '6':
                         return;
@@ -435,10 +399,138 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void dormmanagement()
+        static void dormmanagement(List<Dorm> dorm)
         {
-            Console.BackgroundColor = ConsoleColor.DarkBlue;
+
+            while (true)
+            {
+                Console.BackgroundColor = ConsoleColor.DarkYellow;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.Clear();
+                Console.WriteLine("------------------------------------------------------------------------------------------------");
+                Console.WriteLine("                                                                                                ");
+                Console.WriteLine("    1.Add new dorm      2.Remove dorm    3.Edit dorm info   4.View dorm list       5.Go back    ");
+                Console.WriteLine("                                                                                                ");
+                Console.WriteLine("         ____               ____               ____               ____               ____       ");
+                Console.WriteLine("        |    |             |    |             |    |             |    |             |    |      ");
+                Console.WriteLine("        |.   |             |.   |             |.   |             |.   |             |.   |      ");
+                Console.WriteLine("        |    |             |    |             |    |             |    |             |    |      ");
+                Console.WriteLine("------------------------------------------------------------------------------------------------");
+                Console.WriteLine("                                                                                                ");
+                Console.WriteLine("                          [Pick a number from (1-5)]                                            ");
+                Console.WriteLine("                                                                                                ");
+                Console.WriteLine("------------------------------------------------------------------------------------------------");
+                var x = Console.ReadKey();
+                switch (x.KeyChar)
+                {
+                    case '1':
+
+                        break;
+                    case '2':
+
+                        break;
+                    case '3':
+
+                        break;
+                    case '4':
+
+                        break;
+                    case '5':
+
+                        return;
+                    default:
+                        Console.WriteLine("Invalid choice, please try again.");
+                        break;
+                }
+            }
+        }
+        static void blockmanagement(List<Block> blocks, List<Student> students, List<Blockboss> blockbosses)
+        {
+            Console.BackgroundColor = ConsoleColor.DarkYellow;
             Console.ForegroundColor = ConsoleColor.Black;
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("--------------------------------------------------------------------------------------------------------");
+                Console.WriteLine("                                                                                                        ");
+                Console.WriteLine("    1.Add new block      2.Remove block      3.Edit block info    4.View block list        5.Go back    ");
+                Console.WriteLine("                                                                                                        ");
+                Console.WriteLine("         ____                 ____                 ____                 ____                 ____       ");
+                Console.WriteLine("        |    |               |    |               |    |               |    |               |    |      ");
+                Console.WriteLine("        |.   |               |.   |               |.   |               |.   |               |.   |      ");
+                Console.WriteLine("        |    |               |    |               |    |               |    |               |    |      ");
+                Console.WriteLine("--------------------------------------------------------------------------------------------------------");
+                Console.WriteLine("                                                                                                        ");
+                Console.WriteLine("                                       [Pick a number from (1-5)]                                       ");
+                Console.WriteLine("                                                                                                        ");
+                Console.WriteLine("--------------------------------------------------------------------------------------------------------");
+                var x = Console.ReadKey();
+                switch (x.KeyChar)
+                {
+                    case '1':
+
+                        break;
+                    case '2':
+
+                        break;
+                    case '3':
+
+                        break;
+                    case '4':
+
+                        break;
+                    case '5':
+
+                        return;
+                    default:
+                        Console.WriteLine("Invalid choice, please try again.");
+                        break;
+                }
+            }
+        }
+        static void personalmanagement(List<Student> student, List<Dormboss> dormboss, List<Blockboss> blockboss)
+        {
+            Console.BackgroundColor = ConsoleColor.DarkYellow;
+            Console.ForegroundColor = ConsoleColor.Black;
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("----------------------------------------------------------------------------------------------");
+                Console.WriteLine("                                                                                              ");
+                Console.WriteLine("    1.Manage dormbosses    2.Manage blockbosses      3.Manage students           4.Go back    ");
+                Console.WriteLine("                                                                                              ");
+                Console.WriteLine("           ____                    ____                    ____                    ____       ");
+                Console.WriteLine("          |    |                  |    |                  |    |                  |    |      ");
+                Console.WriteLine("          |.   |                  |.   |                  |.   |                  |.   |      ");
+                Console.WriteLine("          |    |                  |    |                  |    |                  |    |      ");
+                Console.WriteLine("----------------------------------------------------------------------------------------------");
+                Console.WriteLine("                                                                                              ");
+                Console.WriteLine("                                  [Pick a number from (1-4)]                                  ");
+                Console.WriteLine("                                                                                              ");
+                Console.WriteLine("----------------------------------------------------------------------------------------------");
+                var x = Console.ReadKey();
+                switch (x.KeyChar)
+                {
+                    case '1':
+
+                        break;
+                    case '2':
+
+                        break;
+                    case '3':
+
+                        break;
+                    case '4':
+
+                        return;
+                    default:
+                        Console.WriteLine("Invalid choice, please try again.");
+                        break;
+                }
+            }
+        }
+        static void dormboss()
+        {
             while (true)
             {
                 Console.Clear();
@@ -449,10 +541,8 @@ namespace CSharpTutorials
                 Console.WriteLine("");
             }
         }
-        static void blockmanagement()
+        static void blockboss()
         {
-            Console.BackgroundColor = ConsoleColor.DarkBlue;
-            Console.ForegroundColor = ConsoleColor.Black;
             while (true)
             {
                 Console.Clear();
@@ -463,10 +553,8 @@ namespace CSharpTutorials
                 Console.WriteLine("");
             }
         }
-        static void personalmanagement()
+        static void student()
         {
-            Console.BackgroundColor = ConsoleColor.DarkBlue;
-            Console.ForegroundColor = ConsoleColor.Black;
             while (true)
             {
                 Console.Clear();
@@ -477,36 +565,106 @@ namespace CSharpTutorials
                 Console.WriteLine("");
             }
         }
-        static void belongingsmanagement()
+        static void belongingsmanagement(List<Equipment> equipment, List<Room> room, List<Student> student, List<Equipment> repair)
         {
-            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.BackgroundColor = ConsoleColor.DarkYellow;
             Console.ForegroundColor = ConsoleColor.Black;
             while (true)
             {
-                Console.Clear();
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
+                Console.Clear(); ;
+                Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
+                Console.WriteLine("                                                                                                              ");
+                Console.WriteLine("      1.Add new belongings         2.Attaching belongings to rooms    3.Attaching belongings to students      ");
+                Console.WriteLine("                                                                                                              ");
+                Console.WriteLine("              ____                               ____                                 ____                    ");
+                Console.WriteLine("             |    |                             |    |                               |    |                   ");
+                Console.WriteLine("             |.   |                             |.   |                               |.   |                   ");
+                Console.WriteLine("             |    |                             |    |                               |    |                   ");
+                Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
+                Console.WriteLine("                                                                                                              ");
+                Console.WriteLine("  4.Changing ownership management         5.Repair management                      6.Go back                  ");
+                Console.WriteLine("                                                                                                              ");
+                Console.WriteLine("              ____                               ____                                 ____                    ");
+                Console.WriteLine("             |    |                             |    |                               |    |                   ");
+                Console.WriteLine("             |.   |                             |.   |                               |.   |                   ");
+                Console.WriteLine("             |    |                             |    |                               |    |                   ");
+                Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
+                Console.WriteLine("                                                                                                              ");
+                Console.WriteLine("                                          [Pick a number from (1-6)]                                          ");
+                Console.WriteLine("                                                                                                              ");
+                Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
+                var x = Console.ReadKey();
+                switch (x.KeyChar)
+                {
+                    case '1':
+
+                        break;
+                    case '2':
+
+                        break;
+                    case '3':
+
+                        break;
+                    case '4':
+
+                        break;
+                    case '5':
+
+                        break;
+                    case '6':
+
+                        return;
+                    default:
+                        Console.WriteLine("Invalid choice, please try again.");
+                        break;
+                }
             }
         }
-        static void viewreport()
+        static void viewreport(List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Equipment> repair, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
         {
-            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.BackgroundColor = ConsoleColor.DarkYellow;
             Console.ForegroundColor = ConsoleColor.Black;
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
+                Console.Clear();
+                Console.WriteLine("------------------------------------------------------------------------------------------------------------------");
+                Console.WriteLine("                                                                                                                  ");
+                Console.WriteLine("    1.Residential personal report    2.Belongings report           3.Advanced reports                4.Go back    ");
+                Console.WriteLine("                                                                                                                  ");
+                Console.WriteLine("                ____                         ____                         ____                         ____       ");
+                Console.WriteLine("               |    |                       |    |                       |    |                       |    |      ");
+                Console.WriteLine("               |.   |                       |.   |                       |.   |                       |.   |      ");
+                Console.WriteLine("               |    |                       |    |                       |    |                       |    |      ");
+                Console.WriteLine("------------------------------------------------------------------------------------------------------------------");
+                Console.WriteLine("                                                                                                                  ");
+                Console.WriteLine("                                            [Pick a number from (1-4)]                                            ");
+                Console.WriteLine("                                                                                                                  ");
+                Console.WriteLine("------------------------------------------------------------------------------------------------------------------");
+                var x = Console.ReadKey();
+                switch (x.KeyChar)
+                {
+                    case '1':
+
+                        break;
+                    case '2':
+
+                        break;
+                    case '3':
+
+                        break;
+                    case '4':
+
+                        return;
+                    default:
+                        Console.WriteLine("Invalid choice, please try again.");
+                        break;
+                }
             }
         }
         static void Main(string[] args)
         {
+
             Console.BackgroundColor = ConsoleColor.White;
             Console.ForegroundColor = ConsoleColor.Black;
             List<User> user = new List<User>();
@@ -514,11 +672,11 @@ namespace CSharpTutorials
             List<Block> block = new List<Block>();
             List<Room> room = new List<Room>();
             List<Equipment> equipment = new List<Equipment>();
+            List<Equipment> repair = new List<Equipment>();
             List<Person> person = new List<Person>();
             List<Dormboss> dormboss = new List<Dormboss>();
             List<Student> student = new List<Student>();
             List<Blockboss> blockboss = new List<Blockboss>();
-
             while (true)
             {
                 Console.Clear();
@@ -537,7 +695,7 @@ namespace CSharpTutorials
                 switch (x.KeyChar)
                 {
                     case '1':
-                        Login(user, dorm, block, room, equipment, person, dormboss, student, blockboss);
+                        Login(user, dorm, block, room, equipment, repair, person, dormboss, student, blockboss);
                         break;
                     case '2':
                         signup(user);
@@ -554,4 +712,7 @@ namespace CSharpTutorials
         }
     }
 }
-/**/
+/*
+
+
+*/
