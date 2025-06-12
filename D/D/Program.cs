@@ -36,8 +36,8 @@ namespace CSharpTutorials
         public string address { set; get; }
         public int capacity { set; get; }
         public string dormboss { set; get; }
-        public List<string> blocks { set; get; }
-        public Dorm(string name, string address, int capacity, string dormboss, List<string> blocks)
+        public int[] blocks { set; get; }
+        public Dorm(string name, string address, int capacity, string dormboss, int[] blocks)
         {
             this.name = name;
             this.address = address;
@@ -48,26 +48,26 @@ namespace CSharpTutorials
         public virtual void info()
         {
             Console.WriteLine($"name : {name} | address : {address} | capacity : {capacity} | dormboss : {dormboss}");
-            Console.Write("blocks : "); foreach (string i in blocks) Console.Write($"{i} ");
+            Console.Write("blocks : "); foreach (int i in blocks) Console.Write($"{i} ");
             Console.WriteLine();
         }
         public override bool Equals(object obj)
         {
             if (obj is Dorm other)
             {
-                return this.name == other.name && this.address == other.address && this.capacity == other.capacity && this.dormboss == other.dormboss && this.blocks == other.blocks;
+                return this.name == other.name;
             }
             return false;
         }
     }
     public class Block
     {
-        public string name { set; get; }
+        public int name { set; get; }
         public int level { set; get; }
         public int roomno { set; get; }
         public string blockboss { set; get; }
         public List<string> rooms { set; get; }
-        public Block(string name, int level, int roomno, string blockboss, List<string> rooms)
+        public Block(int name, int level, int roomno, string blockboss, List<string> rooms)
         {
             this.name = name;
             this.level = level;
@@ -85,7 +85,7 @@ namespace CSharpTutorials
         {
             if (obj is Block other)
             {
-                return this.name == other.name && this.level == other.level && this.roomno == other.roomno && this.blockboss == other.blockboss && this.rooms == other.rooms;
+                return this.name == other.name;
             }
             return false;
         }
@@ -124,7 +124,7 @@ namespace CSharpTutorials
         {
             if (obj is Room other)
             {
-                return this.number == other.number && this.level == other.level && this.capacity == other.capacity && this.equipments == other.equipments && this.residentialstudents == other.residentialstudents && this.block == other.block;
+                return this.number == other.number;
             }
             return false;
         }
@@ -187,7 +187,7 @@ namespace CSharpTutorials
         {
             if (obj is Person other)
             {
-                return this.fullname == other.fullname && this.id == other.id && this.phonenumber == other.phonenumber && this.address == other.address;
+                return this.fullname == other.fullname;
             }
             return false;
         }
@@ -211,7 +211,7 @@ namespace CSharpTutorials
         {
             if (obj is Dormboss other)
             {
-                return this.fullname == other.fullname && this.id == other.id && this.phonenumber == other.phonenumber && this.address == other.address && this.rank == other.rank && this.dorm == other.dorm;
+                return this.fullname == other.fullname;
             }
             return false;
         }
@@ -242,7 +242,7 @@ namespace CSharpTutorials
         {
             if (obj is Student other)
             {
-                return this.fullname == other.fullname && this.id == other.id && this.phonenumber == other.phonenumber && this.address == other.address && this.studentid == other.studentid && this.room == other.room && this.block == other.block && this.dorm == other.dorm && this.personalequipments == other.personalequipments;
+                return this.fullname == other.fullname;
             }
             return false;
         }
@@ -264,7 +264,7 @@ namespace CSharpTutorials
         {
             if (obj is Blockboss other)
             {
-                return this.fullname == other.fullname && this.id == other.id && this.phonenumber == other.phonenumber && this.address == other.address && this.studentid == other.studentid && this.room == other.room && this.block == other.block && this.dorm == other.dorm && this.personalequipments == other.personalequipments && this.rank == other.rank;
+                return this.fullname == other.fullname;
             }
             return false;
         }
@@ -287,6 +287,7 @@ namespace CSharpTutorials
                 Console.WriteLine("  --------------------------------");
                 string a = Console.ReadLine();
                 string b = Console.ReadLine();
+                Console.WriteLine();
                 User temp = new User(a, b);
 
                 if (a == "" || b == "")
@@ -324,6 +325,7 @@ namespace CSharpTutorials
                 Console.WriteLine("  --------------------------------");
                 string a = Console.ReadLine();
                 string b = Console.ReadLine();
+                Console.WriteLine();
 
                 if (a == "" || b == "")
                 {
@@ -334,10 +336,14 @@ namespace CSharpTutorials
                 User c = new User(a, b);
                 if (user.Contains(c))
                 {
+                    Console.WriteLine("Account already exists!");
+                    Console.ReadKey();
                     break;
                 }
                 else
                 {
+                    Console.WriteLine("Account successfully added!");
+                    Console.ReadKey();
                     user.Add(c);
                     return;
                 }
@@ -394,7 +400,9 @@ namespace CSharpTutorials
                     case '6':
                         return;
                     default:
+                        Console.WriteLine();
                         Console.WriteLine("Invalid choice, please try again.");
+                        Console.ReadKey();
                         break;
                 }
             }
@@ -421,25 +429,78 @@ namespace CSharpTutorials
                 Console.WriteLine("                                                                                                ");
                 Console.WriteLine("------------------------------------------------------------------------------------------------");
                 var x = Console.ReadKey();
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
                 switch (x.KeyChar)
                 {
                     case '1':
+                        Console.Clear();
+                        Console.WriteLine("Enter name");
+                        string a = Console.ReadLine();
+                        Console.WriteLine("Enter address");
+                        string b = Console.ReadLine();
+                        Console.WriteLine("Enter capacity");
+                        int c = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Enter dormboss");
+                        string d = Console.ReadLine();
+                        Console.WriteLine("Enter number of blocks");
+                        int e = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Enter list of blocks");
+                        int[] f = new int[e];
+                        for (int i = 0; i < e; i++)
+                        {
+                            f[i] = Convert.ToInt32(Console.ReadLine());
+                        }
+                        Dorm g = new Dorm(a, b, c, d, f);
+                        if (dorm.Contains(g))
+                        {
+                            Console.WriteLine("This dorm is already registered!");
+                        }
+                        else
+                        {
+                            dorm.Add(g);
+                            Console.WriteLine("Dorm soccessfully added!");
+                        }
+                        Console.ReadKey();
 
                         break;
                     case '2':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         break;
                     case '3':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         break;
                     case '4':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+                        foreach (Dorm i in dorm)
+                        {
+                            i.info();
+                        }
+                        Console.WriteLine();
+                        Console.ReadKey();
 
                         break;
                     case '5':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         return;
                     default:
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+                        Console.WriteLine();
                         Console.WriteLine("Invalid choice, please try again.");
+                        Console.ReadKey();
                         break;
                 }
             }
@@ -468,22 +529,42 @@ namespace CSharpTutorials
                 switch (x.KeyChar)
                 {
                     case '1':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         break;
                     case '2':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         break;
                     case '3':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         break;
                     case '4':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         break;
                     case '5':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         return;
                     default:
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+                        Console.WriteLine();
                         Console.WriteLine("Invalid choice, please try again.");
+                        Console.ReadKey();
                         break;
                 }
             }
@@ -512,57 +593,249 @@ namespace CSharpTutorials
                 switch (x.KeyChar)
                 {
                     case '1':
-
+                        Dormboss(dormboss);
                         break;
                     case '2':
-
+                        Blockboss(blockboss);
                         break;
                     case '3':
-
+                        Student(student);
                         break;
                     case '4':
 
                         return;
                     default:
+                        Console.WriteLine();
                         Console.WriteLine("Invalid choice, please try again.");
+                        Console.ReadKey();
                         break;
                 }
             }
         }
-        static void dormboss()
+        static void Dormboss(List<Dormboss> dormboss)
         {
             while (true)
             {
+
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
                 Console.Clear();
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
+                Console.WriteLine("  ----------------------------------------------------------------- ");
+                Console.WriteLine(" |                                |                                |");
+                Console.WriteLine(" |       1.Add new dormboss       |       2.Remove dormboss        |");
+                Console.WriteLine(" |                                |                                |");
+                Console.WriteLine("  ----------------------------------------------------------------- ");
+                Console.WriteLine(" |                                |                                |");
+                Console.WriteLine(" |       3.Edit dormboss info     |      4.View dormboss list      |");
+                Console.WriteLine(" |                                |                                |");
+                Console.WriteLine("  ----------------------------------------------------------------- ");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine(" |           5.Go back            |");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine("  -------------------------------- ");
+                var x = Console.ReadKey();
+                switch (x.KeyChar)
+                {
+                    case '1':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '2':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '3':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '4':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '5':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '6':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        return;
+                    default:
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+                        Console.WriteLine();
+                        Console.WriteLine("Invalid choice, please try again.");
+                        Console.ReadKey();
+                        break;
+                }
             }
         }
-        static void blockboss()
+        static void Blockboss(List<Blockboss> blockboss)
         {
             while (true)
             {
+
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
                 Console.Clear();
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
+                Console.WriteLine("  ----------------------------------------------------------------- ");
+                Console.WriteLine(" |                                |                                |");
+                Console.WriteLine(" |      1.Add new blockboss       |       2.Remove blockboss       |");
+                Console.WriteLine(" |                                |                                |");
+                Console.WriteLine("  ----------------------------------------------------------------- ");
+                Console.WriteLine(" |                                |                                |");
+                Console.WriteLine(" |     3.Edit blockboss info      |     4.View blockboss list      |");
+                Console.WriteLine(" |                                |                                |");
+                Console.WriteLine("  ----------------------------------------------------------------- ");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine(" |           5.Go back            |");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine("  -------------------------------- ");
+                var x = Console.ReadKey();
+                switch (x.KeyChar)
+                {
+                    case '1':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '2':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '3':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '4':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '5':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '6':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        return;
+                    default:
+                        Console.WriteLine();
+                        Console.WriteLine("Invalid choice, please try again.");
+                        Console.ReadKey();
+                        break;
+                }
             }
         }
-        static void student()
+        static void Student(List<Student> student)
         {
             while (true)
             {
+
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
                 Console.Clear();
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine("");
+                Console.WriteLine("  ----------------------------------------------------------------- ");
+                Console.WriteLine(" |                                |                                |");
+                Console.WriteLine(" |        1.Add new student       |        2.Remove student        |");
+                Console.WriteLine(" |                                |                                |");
+                Console.WriteLine("  ----------------------------------------------------------------- ");
+                Console.WriteLine(" |                                |                                |");
+                Console.WriteLine(" |      3.Edit student info       |         4.Find student         |");
+                Console.WriteLine(" |                                |                                |");
+                Console.WriteLine("  ----------------------------------------------------------------- ");
+                Console.WriteLine(" |                                |                                |");
+                Console.WriteLine(" |      5.Edit student info       |    6.Add student to a dorm     |");
+                Console.WriteLine(" |                                |                                |");
+                Console.WriteLine("  ----------------------------------------------------------------- ");
+                Console.WriteLine(" |                                |                                |");
+                Console.WriteLine(" |7.Change student Dorm/Block/Room|           8.Go back            |");
+                Console.WriteLine(" |                                |                                |");
+                Console.WriteLine("  ----------------------------------------------------------------- ");
+                var x = Console.ReadKey();
+                switch (x.KeyChar)
+                {
+                    case '1':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '2':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '3':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '4':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '5':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '6':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '7':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        break;
+                    case '8':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+
+                        return;
+                    default:
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+                        Console.WriteLine();
+                        Console.WriteLine("Invalid choice, please try again.");
+                        Console.ReadKey();
+                        break;
+                }
             }
         }
         static void belongingsmanagement(List<Equipment> equipment, List<Room> room, List<Student> student, List<Equipment> repair)
@@ -597,25 +870,48 @@ namespace CSharpTutorials
                 switch (x.KeyChar)
                 {
                     case '1':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         break;
                     case '2':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         break;
                     case '3':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         break;
                     case '4':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         break;
                     case '5':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         break;
                     case '6':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         return;
                     default:
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+                        Console.WriteLine();
                         Console.WriteLine("Invalid choice, please try again.");
+                        Console.ReadKey();
                         break;
                 }
             }
@@ -645,19 +941,36 @@ namespace CSharpTutorials
                 switch (x.KeyChar)
                 {
                     case '1':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         break;
                     case '2':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         break;
                     case '3':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         break;
                     case '4':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
 
                         return;
                     default:
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+                        Console.WriteLine();
                         Console.WriteLine("Invalid choice, please try again.");
+                        Console.ReadKey();
                         break;
                 }
             }
@@ -679,6 +992,8 @@ namespace CSharpTutorials
             List<Blockboss> blockboss = new List<Blockboss>();
             while (true)
             {
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
                 Console.Clear();
                 Console.WriteLine("  --------------------------------");
                 Console.WriteLine(" |                                |");
@@ -705,7 +1020,9 @@ namespace CSharpTutorials
                         Console.WriteLine("Goodbye!");
                         return;
                     dafault:
+                        Console.WriteLine();
                         Console.WriteLine("Invalid choice, try again.");
+                        Console.ReadKey();
                         break;
                 }
             }
@@ -713,6 +1030,7 @@ namespace CSharpTutorials
     }
 }
 /*
+
 
 
 */
