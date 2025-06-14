@@ -795,7 +795,7 @@ namespace CSharpTutorials
                         g = new Dormboss(a, null, null, null, null, null);
                         if (dormboss.Contains(g))
                         {
-                            Console.WriteLine("Enter dormbosse's id : ");
+                            Console.WriteLine("Enter dormboss id : ");
                             string b = Console.ReadLine();
                             Console.WriteLine("Enter phone number :");
                             string c = Console.ReadLine();
@@ -884,7 +884,7 @@ namespace CSharpTutorials
                         }
                         else
                         {
-                            Console.WriteLine("Enter blockboss id : ");
+                            Console.WriteLine("Enter personal id : ");
                             string b = Console.ReadLine();
                             Console.WriteLine("Enter phone number :");
                             string c = Console.ReadLine();
@@ -900,7 +900,7 @@ namespace CSharpTutorials
                             string g = Console.ReadLine();
                             Console.WriteLine("Enter personal equipments list : ");
                             List<string> h = new List<string>();
-                            Console.WriteLine("Enter ''0'' to finish listing : ");
+                            Console.WriteLine("Enter (0) to finish listing : ");
                             while (true)
                             {
                                 string i = Console.ReadLine();
@@ -958,7 +958,7 @@ namespace CSharpTutorials
                         l = new Blockboss(a, null, null, null, null, 0, 0, null, null, null);
                         if (blockboss.Contains(l))
                         {
-                            Console.WriteLine("Enter blockboss id : ");
+                            Console.WriteLine("Enter personal id : ");
                             string b = Console.ReadLine();
                             Console.WriteLine("Enter phone number :");
                             string c = Console.ReadLine();
@@ -1058,7 +1058,7 @@ namespace CSharpTutorials
                 Console.WriteLine(" |                                |                                |");
                 Console.WriteLine("  ----------------------------------------------------------------- ");
                 Console.WriteLine(" |                                |                                |");
-                Console.WriteLine(" |      5.Edit student info       |    6.Add student to a dorm     |");
+                Console.WriteLine(" |      5.View student info       |    6.Add student to a dorm     |");
                 Console.WriteLine(" |                                |                                |");
                 Console.WriteLine("  ----------------------------------------------------------------- ");
                 Console.WriteLine(" |                                |                                |");
@@ -1072,19 +1072,135 @@ namespace CSharpTutorials
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
-
+                        Console.WriteLine("Enter fullname : ");
+                        string a = Console.ReadLine();
+                        Student l = new Student(a, null, null, null, null, 0, 0, null, null);
+                        if (student.Contains(l))
+                        {
+                            Console.WriteLine("This student is already registered!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Enter personal id : ");
+                            string b = Console.ReadLine();
+                            Console.WriteLine("Enter phone number :");
+                            string c = Console.ReadLine();
+                            Console.WriteLine("Enter address : ");
+                            string d = Console.ReadLine();
+                            Console.WriteLine("Enter student id : ");
+                            string j = Console.ReadLine();
+                            Console.WriteLine("Enter room number : ");
+                            int e = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("Enter block number : ");
+                            int f = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("Enter dorm name : ");
+                            string g = Console.ReadLine();
+                            Console.WriteLine("Enter personal equipments list : ");
+                            List<string> h = new List<string>();
+                            Console.WriteLine("Enter (0) to finish listing : ");
+                            while (true)
+                            {
+                                string i = Console.ReadLine();
+                                if (i != "0")
+                                {
+                                    if (h.Contains(i))
+                                    {
+                                        Console.WriteLine("Item already registered!");
+                                    }
+                                    else
+                                    {
+                                        h.Add(i);
+                                        Console.WriteLine("Item added to the list!");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Listing equipments ended!");
+                                    break;
+                                }
+                            }
+                            l = new Student(a, b, c, d, j, e, f, g, h);
+                            student.Add(l);
+                            Console.WriteLine("Student successfully added!");
+                        }
+                        Console.ReadKey();
                         break;
                     case '2':
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
+                        Console.WriteLine("Enter fullname");
+                        a = Console.ReadLine();
+                        l = new Student(a, null, null, null, null, 0, 0, null, null);
+                        if (!student.Contains(l))
+                        {
+                            Console.WriteLine("Student hasn't been registered!");
+                        }
+                        else
+                        {
+                            student.Remove(l);
+                            Console.WriteLine("Student successfully removed!");
+                        }
+                        Console.ReadKey();
 
                         break;
                     case '3':
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
-
+                        Console.WriteLine("Enter fullname");
+                        a = Console.ReadLine();
+                        l = new Student(a, null, null, null, null, 0, 0, null, null);
+                        if (student.Contains(l))
+                        {
+                            Console.WriteLine("Enter personal id : ");
+                            string b = Console.ReadLine();
+                            Console.WriteLine("Enter phone number :");
+                            string c = Console.ReadLine();
+                            Console.WriteLine("Enter address : ");
+                            string d = Console.ReadLine();
+                            Console.WriteLine("Enter student id : ");
+                            string j = Console.ReadLine();
+                            Console.WriteLine("Enter room number : ");
+                            int e = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("Enter block number : ");
+                            int f = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("Enter dorm name : ");
+                            string g = Console.ReadLine();
+                            Console.WriteLine("Enter personal equipments list : ");
+                            List<string> h = new List<string>();
+                            Console.WriteLine("Enter (0) to finish listing : ");
+                            while (true)
+                            {
+                                string i = Console.ReadLine();
+                                if (i != "0")
+                                {
+                                    if (h.Contains(i))
+                                    {
+                                        Console.WriteLine("Item already registered!");
+                                    }
+                                    else
+                                    {
+                                        h.Add(i);
+                                        Console.WriteLine("Item added to the list!");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Listing equipments ended!");
+                                    break;
+                                }
+                            }
+                            l = new Student(a, b, c, d, j, e, f, g, h);
+                            student.Remove(l);
+                            student.Add(l);
+                            Console.WriteLine("Student successfully changed!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Student hasn't been registered!");
+                        }
+                        Console.ReadKey();
                         break;
                     case '4':
                         Console.BackgroundColor = ConsoleColor.Black;
@@ -1309,5 +1425,12 @@ namespace CSharpTutorials
 /*
 
 
+        public virtual void Find(Student s)
+        {
+            if (s is Student other)
+            {
+                 s = other;
+            }
+        }
 
 */
