@@ -48,7 +48,7 @@ namespace CSharpTutorials
         public virtual void info()
         {
             Console.WriteLine($"name : {name} | address : {address} | capacity : {capacity} | dormboss : {dormboss}");
-            Console.Write("blocks : "); foreach (int i in blocks) Console.Write($"{i} ");
+            Console.Write("blocks : "); foreach (int i in blocks) Console.Write($"| {i} | ");
             Console.WriteLine();
         }
         public override bool Equals(object obj)
@@ -78,7 +78,7 @@ namespace CSharpTutorials
         public virtual void info()
         {
             Console.WriteLine($"name : {name} | level : {level} | roomno : {roomno} | blockboss : {blockboss}");
-            Console.Write("rooms : "); foreach (int i in rooms) Console.Write($"{i} ");
+            Console.Write("rooms : "); foreach (int i in rooms) Console.Write($"| {i} | ");
             Console.WriteLine();
         }
         public override bool Equals(object obj)
@@ -115,9 +115,9 @@ namespace CSharpTutorials
         public virtual void info()
         {
             Console.WriteLine($"number : {number} | level : {level} | capacity : {capacity} | block : {block}");
-            Console.Write("equipments : "); foreach (string i in equipments) Console.Write($"{i} ");
+            Console.Write("equipments : "); foreach (string i in equipments) Console.Write($"| {i} | ");
             Console.WriteLine();
-            Console.Write("residentialstudents : "); foreach (string i in residentialstudents) Console.Write($"{i} ");
+            Console.Write("residentialstudents : "); foreach (string i in residentialstudents) Console.Write($"| {i} | ");
             Console.WriteLine();
         }
         public override bool Equals(object obj)
@@ -154,7 +154,7 @@ namespace CSharpTutorials
         public virtual void info()
         {
             Console.WriteLine($"number : {number} | belongingid : {belongingid} | status : {status} | room : {room} | student : {student}");
-            Console.Write("equipments : "); foreach (string i in belongings) Console.Write($"{i} ");
+            Console.Write("equipments : "); foreach (string i in belongings) Console.Write($"| {i} | ");
             Console.WriteLine();
         }
         public override bool Equals(object obj)
@@ -235,7 +235,7 @@ namespace CSharpTutorials
         {
             base.info();
             Console.WriteLine($"| sudentid : {studentid} | room : {room} | block : {block} | dorm : {dorm}");
-            Console.Write("personalequipments : "); foreach (string i in personalequipments) Console.Write($"{i} ");
+            Console.Write("personalequipments : "); foreach (string i in personalequipments) Console.Write($"| {i} | ");
             Console.WriteLine();
         }
         public override bool Equals(object obj)
@@ -245,6 +245,71 @@ namespace CSharpTutorials
                 return this.fullname == other.fullname;
             }
             return false;
+        }
+        public virtual bool Dorm(object obj)
+        {
+            if (obj is Student other)
+            {
+                return this.dorm == other.dorm;
+            }
+            return false;
+        }
+        public virtual void ChangeDorm(List<Student> student, Student other)
+        {
+            foreach (Student s in student)
+            {
+                if (s.fullname == other.fullname)
+                {
+                    Console.WriteLine("Enter new dorm : ");
+                    string a = Console.ReadLine();
+                    Student b = s;
+                    b.dorm = a;
+                    Console.WriteLine("Dorm successfully changed!");
+                    return;
+                }
+            }
+        }
+        public virtual void ChangeBlock(List<Student> student, Student other)
+        {
+            foreach (Student s in student)
+            {
+                if (s.fullname == other.fullname)
+                {
+                    Console.WriteLine("Enter new block : ");
+                    int a = Convert.ToInt32(Console.ReadLine());
+                    Student b = s;
+                    b.block = a;
+                    Console.WriteLine("Block successfully changed!");
+                    return;
+                }
+            }
+        }
+        public virtual void ChangeRoom(List<Student> student, Student other)
+        {
+            foreach (Student s in student)
+            {
+                if (s.fullname == other.fullname)
+                {
+                    Console.WriteLine("Enter new room : ");
+                    int a = Convert.ToInt32(Console.ReadLine());
+                    Student b = s;
+                    b.room = a;
+                    Console.WriteLine("Room successfully changed!");
+                    return;
+                }
+            }
+        }
+        public virtual void Find(List<Student> student, Student other)
+        {
+            foreach (Student s in student)
+            {
+                if (s.fullname == other.fullname)
+                {
+                    s.info();
+                    return;
+                }
+            }
+            Console.WriteLine($"Student hasn't been registered!");
         }
     }
     public class Blockboss : Student
@@ -1206,25 +1271,61 @@ namespace CSharpTutorials
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
-
+                        Console.WriteLine("Enter fullname");
+                        a = Console.ReadLine();
+                        l = new Student(a, null, null, null, null, 0, 0, null, null);
+                        if (student.Contains(l))
+                        {
+                            l.Find(student, l);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Student hasn't been registered!");
+                        }
+                        Console.ReadKey();
                         break;
                     case '5':
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
-
+                        if (student.Count == 0)
+                        {
+                            Console.WriteLine("There are no registered blockbosses!");
+                        }
+                        else
+                        {
+                            foreach (Student i in student)
+                            {
+                                i.info();
+                                Console.WriteLine();
+                            }
+                        }
+                        Console.WriteLine();
+                        Console.ReadKey();
                         break;
                     case '6':
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
+                        Console.WriteLine("Enter fullname");
+                        a = Console.ReadLine();
+                        l = new Student(a, null, null, null, null, 0, 0, null, null);
+                        if (student.Contains(l))
+                        {
+                            l.ChangeDorm(student, l);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Student hasn't been registered!");
+                        }
+                        Console.ReadKey();
 
                         break;
                     case '7':
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
-
+                        Change(student);
                         break;
                     case '8':
                         return;
@@ -1239,13 +1340,108 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void belongingsmanagement(List<Equipment> equipment, List<Room> room, List<Student> student, List<Equipment> repair)
+        static void Change(List<Student> student)
         {
-            Console.BackgroundColor = ConsoleColor.DarkYellow;
-            Console.ForegroundColor = ConsoleColor.Black;
             while (true)
             {
-                Console.Clear(); ;
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.Clear();
+                Console.WriteLine("  --------------------------------");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine(" |         1.Change dorm          |");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine("  --------------------------------");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine(" |         2.Change block         |");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine("  --------------------------------");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine(" |         3.Change room          |");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine("  --------------------------------");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine(" |           4.Go back            |");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine("  --------------------------------");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine(" |   [Pick a number from (1-4)]   |");
+                Console.WriteLine(" |                                |");
+                Console.WriteLine("  --------------------------------");
+                var x = Console.ReadKey();
+                switch (x.KeyChar)
+                {
+                    case '1':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+                        Console.WriteLine("Enter fullname");
+                        string a = Console.ReadLine();
+                        Student l = new Student(a, null, null, null, null, 0, 0, null, null);
+                        if (student.Contains(l))
+                        {
+                            l.ChangeDorm(student, l);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Student hasn't been registered!");
+                        }
+                        Console.ReadKey();
+                        break;
+                    case '2':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+                        Console.WriteLine("Enter fullname");
+                        a = Console.ReadLine();
+                        l = new Student(a, null, null, null, null, 0, 0, null, null);
+                        if (student.Contains(l))
+                        {
+                            l.ChangeBlock(student, l);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Student hasn't been registered!");
+                        }
+                        Console.ReadKey();
+                        break;
+                    case '3':
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+                        Console.WriteLine("Enter fullname");
+                        a = Console.ReadLine();
+                        l = new Student(a, null, null, null, null, 0, 0, null, null);
+                        if (student.Contains(l))
+                        {
+                            l.ChangeRoom(student, l);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Student hasn't been registered!");
+                        }
+                        Console.ReadKey();
+                        break;
+                    case '4':
+                        return;
+                    default:
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Clear();
+                        Console.WriteLine();
+                        Console.WriteLine("Invalid choice, please try again.");
+                        Console.ReadKey();
+                        break;
+                }
+            }
+        }
+        static void belongingsmanagement(List<Equipment> equipment, List<Room> room, List<Student> student, List<Equipment> repair)
+        {
+            while (true)
+            {
+                Console.BackgroundColor = ConsoleColor.DarkYellow;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.Clear();
                 Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
                 Console.WriteLine("                                                                                                              ");
                 Console.WriteLine("      1.Add new belongings         2.Attaching belongings to rooms    3.Attaching belongings to students      ");
@@ -1315,11 +1511,11 @@ namespace CSharpTutorials
         }
         static void viewreport(List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Equipment> repair, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
         {
-            Console.BackgroundColor = ConsoleColor.DarkYellow;
-            Console.ForegroundColor = ConsoleColor.Black;
+
             while (true)
             {
-                Console.Clear();
+                Console.BackgroundColor = ConsoleColor.DarkYellow;
+                Console.ForegroundColor = ConsoleColor.Black;
                 Console.Clear();
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------");
                 Console.WriteLine("                                                                                                                  ");
@@ -1412,7 +1608,10 @@ namespace CSharpTutorials
                         Console.Clear();
                         Console.WriteLine("Goodbye!");
                         return;
-                    dafault:
+                    default:
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.Clear();
                         Console.WriteLine();
                         Console.WriteLine("Invalid choice, try again.");
                         Console.ReadKey();
@@ -1425,12 +1624,5 @@ namespace CSharpTutorials
 /*
 
 
-        public virtual void Find(Student s)
-        {
-            if (s is Student other)
-            {
-                 s = other;
-            }
-        }
 
 */
