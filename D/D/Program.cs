@@ -164,6 +164,23 @@ namespace CSharpTutorials
             }
             return false;
         }
+        public virtual void Find(List<Equipment> equipment, Equipment other)
+        {
+            foreach (Equipment e in equipment)
+            {
+                if (e.belonging == other.belonging && e.number == other.number && e.belongingid == other.belongingid && e.status == other.status)
+                {
+                    other.belonging = e.belonging;
+                    other.number = e.number;
+                    other.belongingid = e.belongingid;
+                    other.status = e.status;
+                    other.room = e.room;
+                    other.student = e.student;
+                    return;
+                }
+            }
+            Console.WriteLine($"Student hasn't been registered!");
+        }
     }
     public class Person
     {
@@ -335,7 +352,7 @@ namespace CSharpTutorials
     }
     class Program
     {
-        static async void Login(List<User> user, List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Equipment> repair, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
+        static async void Login(List<User> user, List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
         {
             while (true)
             {
@@ -361,7 +378,7 @@ namespace CSharpTutorials
                 }
                 if (user.Contains(temp))
                 {
-                    managementpage(dorm, block, room, equipment, repair, person, dormboss, student, blockboss);
+                    managementpage(dorm, block, room, equipment, person, dormboss, student, blockboss);
                     break;
                 }
                 else
@@ -412,7 +429,7 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void managementpage(List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Equipment> repair, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
+        static void managementpage(List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
         {
             while (true)
             {
@@ -455,10 +472,10 @@ namespace CSharpTutorials
                         personalmanagement(student, dormboss, blockboss);
                         break;
                     case '4':
-                        belongingsmanagement(equipment, room, student, repair);
+                        belongingsmanagement(equipment, room, student);
                         break;
                     case '5':
-                        viewreport(dorm, block, room, equipment, repair, person, dormboss, student, blockboss);
+                        viewreport(dorm, block, room, equipment, person, dormboss, student, blockboss);
                         break;
                     case '6':
                         return;
@@ -1449,7 +1466,7 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void belongingsmanagement(List<Equipment> equipment, List<Room> room, List<Student> student, List<Equipment> repair)
+        static void belongingsmanagement(List<Equipment> equipment, List<Room> room, List<Student> student)
         {
             while (true)
             {
@@ -1495,15 +1512,61 @@ namespace CSharpTutorials
                             int b = Convert.ToInt32(Console.ReadLine());
                             Console.WriteLine("Enter belonging id : ");
                             string c = Console.ReadLine();
-                            Console.WriteLine("Enter belonging status : ");
-                            string d = Console.ReadLine();
-                            Console.WriteLine("Enter room number : ");
-                            int e = Convert.ToInt32(Console.ReadLine());
-                            Console.WriteLine("Enter owner(student) name : ");
-                            string f = Console.ReadLine();
-                            Equipment B = new Equipment(a, b, c, d, e, f);
-                            equipment.Add(B);
-                            Console.WriteLine("Item added to the list!");
+                            Console.WriteLine("Choose belonging status : ");
+                            Console.WriteLine("1.ok.");
+                            Console.WriteLine("2.broken.");
+                            Console.WriteLine();
+                            string d = null;
+                            Equipment B = new Equipment(null, 0, null, null, 0, null);
+                            while (true)
+                            {
+                                var e = Console.ReadKey();
+                                Console.WriteLine();
+                                if (e.KeyChar == '1')
+                                {
+                                    d = "ok"; ;
+                                    Console.WriteLine("Enter room number : ");
+                                    int g = Convert.ToInt32(Console.ReadLine());
+                                    Console.WriteLine("Enter owner(student) name : ");
+                                    string f = Console.ReadLine();
+                                    B = new Equipment(a, b, c, d, g, f);
+                                    if (!equipment.Contains(B))
+                                    {
+                                        equipment.Add(B);
+                                        Console.WriteLine("Item added to the list!");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("The item is already registered!");
+                                    }
+                                    break;
+                                }
+                                else if (e.KeyChar == '2')
+                                {
+                                    d = "broken";
+                                    Console.WriteLine("Enter room number : ");
+                                    int g = Convert.ToInt32(Console.ReadLine());
+                                    Console.WriteLine("Enter owner(student) name : ");
+                                    string f = Console.ReadLine();
+                                    B = new Equipment(a, b, c, d, g, f);
+                                    if (!equipment.Contains(B))
+                                    {
+                                        equipment.Add(B);
+                                        Console.WriteLine("Item added to the list!");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("The item is already registered!");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("try again!");
+                                }
+
+                                break;
+                            }
+
                             Console.ReadKey();
                         }
                         break;
@@ -1511,24 +1574,248 @@ namespace CSharpTutorials
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
-
+                        Console.WriteLine("belongings : ");
+                        Console.WriteLine();
+                        foreach (Equipment i in equipment)
+                        {
+                            i.info();
+                        }
+                        Console.WriteLine();
+                        Console.WriteLine("Enter the belonging's details that you want to reassign to another room : ");
+                        Console.WriteLine();
+                        Console.WriteLine("Enter belonging name : ");
+                        string z = Console.ReadLine();
+                        Console.WriteLine("Enter Part number : ");
+                        int y = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Enter belonging id : ");
+                        string w = Console.ReadLine();
+                        Console.WriteLine("Choose status : ");
+                        Console.WriteLine("1.ok.");
+                        Console.WriteLine("2.broken.");
+                        Console.WriteLine();
+                        string X = null;
+                        while (true)
+                        {
+                            var a = Console.ReadKey();
+                            Console.WriteLine();
+                            if (a.KeyChar == '1')
+                            {
+                                X = "ok";
+                                break;
+                            }
+                            else if (a.KeyChar == '2')
+                            {
+                                X = "broken";
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("try again!");
+                                Console.ReadKey();
+                            }
+                        }
+                        Equipment C = new Equipment(z, y, w, X, 0, null);
+                        if (equipment.Contains(C))
+                        {
+                            C.Find(equipment, C);
+                            equipment.Remove(C);
+                            Console.WriteLine("Enter room number : ");
+                            int u = Convert.ToInt32(Console.ReadLine());
+                            C.room = u;
+                            equipment.Add(C);
+                            Console.WriteLine("Equipment's room has been changed successfully!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Equipment hasn't been registered!");
+                        }
+                        Console.ReadKey();
                         break;
                     case '3':
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
+                        Console.WriteLine("belongings : ");
+                        Console.WriteLine();
+                        foreach (Equipment i in equipment)
+                        {
+                            i.info();
+                        }
+                        Console.WriteLine();
+                        Console.WriteLine("Enter the belonging's details that you want to reassign to another owner(student) : ");
+                        Console.WriteLine();
+                        Console.WriteLine("Enter belonging name : ");
+                        z = Console.ReadLine();
+                        Console.WriteLine("Enter Part number : ");
+                        y = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Enter belonging id : ");
+                        w = Console.ReadLine();
+                        Console.WriteLine("Choose status : ");
+                        Console.WriteLine("1.ok.");
+                        Console.WriteLine("2.broken.");
+                        Console.WriteLine();
+                        string Y = null;
+                        while (true)
+                        {
+                            var a = Console.ReadKey();
+                            Console.WriteLine();
+                            if (a.KeyChar == '1')
+                            {
+                                Y = "ok";
+                                break;
+                            }
+                            else if (a.KeyChar == '2')
+                            {
+                                Y = "broken";
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("try again!");
+                                Console.ReadKey();
+                            }
+                        }
+                        C = new Equipment(z, y, w, Y, 0, null);
+                        if (equipment.Contains(C))
+                        {
+                            C.Find(equipment, C);
+                            equipment.Remove(C);
+                            Console.WriteLine("Enter owner(student) name : ");
+                            string f = Console.ReadLine();
+                            C.student = f;
+                            equipment.Add(C);
+                            Console.WriteLine("Equipment's owner(student) name has been changed successfully!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Equipment hasn't been registered!");
+                        }
+                        Console.ReadKey();
 
                         break;
                     case '4':
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
+                        Console.WriteLine("belongings : ");
+                        Console.WriteLine();
+                        foreach (Equipment i in equipment)
+                        {
+                            i.info();
+                        }
+                        Console.WriteLine();
+                        Console.WriteLine("Enter the belonging's details that you want to reassign to another owner(student) : ");
+                        Console.WriteLine();
+                        Console.WriteLine("Enter belonging name : ");
+                        z = Console.ReadLine();
+                        Console.WriteLine("Enter Part number : ");
+                        y = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Enter belonging id : ");
+                        w = Console.ReadLine();
+                        Console.WriteLine("Choose status : ");
+                        Console.WriteLine("1.ok.");
+                        Console.WriteLine("2.broken.");
+                        Console.WriteLine();
+                        string Z = null;
+                        while (true)
+                        {
+                            var a = Console.ReadKey();
+                            Console.WriteLine();
+                            if (a.KeyChar == '1')
+                            {
+                                Z = "ok";
+                                break;
+                            }
+                            else if (a.KeyChar == '2')
+                            {
+                                Z = "broken";
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("try again!");
+                                Console.ReadKey();
+                            }
+                        }
+                        C = new Equipment(z, y, w, Z, 0, null);
+                        if (equipment.Contains(C))
+                        {
+                            C.Find(equipment, C);
+                            equipment.Remove(C);
+                            Console.WriteLine("Enter owner(student) name : ");
+                            string f = Console.ReadLine();
+                            C.student = f;
+                            equipment.Add(C);
+                            Console.WriteLine("Equipment's owner(student) name has been changed successfully!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Equipment hasn't been registered!");
+                        }
+                        Console.ReadKey();
 
                         break;
                     case '5':
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
+                        Console.WriteLine("belongings : ");
+                        Console.WriteLine();
+                        foreach (Equipment i in equipment)
+                        {
+                            i.info();
+                        }
+                        Console.WriteLine();
+                        Console.WriteLine("Enter the belonging's details that you want to reassign to another owner(student) : ");
+                        Console.WriteLine();
+                        Console.WriteLine("Enter belonging name : ");
+                        z = Console.ReadLine();
+                        Console.WriteLine("Enter Part number : ");
+                        y = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Enter belonging id : ");
+                        w = Console.ReadLine();
+                        Console.WriteLine("Enter status : ");
+                        string t = Console.ReadLine();
+                        C = new Equipment(z, y, w, t, 0, null);
+                        if (equipment.Contains(C))
+                        {
+                            C.Find(equipment, C);
+                            Equipment D = C;
+                            equipment.Remove(C);
+                            Console.WriteLine("Choose new status : ");
+                            Console.WriteLine("1.ok.");
+                            Console.WriteLine("2.broken.");
+                            Console.WriteLine();
+                            string f = null;
+                            while (true)
+                            {
+                                var a = Console.ReadKey();
+                                Console.WriteLine();
+                                if (a.KeyChar == '1')
+                                {
+                                    f = "ok";
+                                    break;
+                                }
+                                else if (a.KeyChar == '2')
+                                {
+                                    f = "broken";
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("try again!");
+                                    Console.ReadKey();
+                                }
+                            }
+                            D.status = f;
+                            equipment.Add(D);
+                            Console.WriteLine("Equipment's status has been changed successfully!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Equipment hasn't been registered!");
+                        }
+                        Console.ReadKey();
 
                         break;
                     case '6':
@@ -1544,7 +1831,7 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void viewreport(List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Equipment> repair, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
+        static void viewreport(List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
         {
 
             while (true)
@@ -1609,7 +1896,6 @@ namespace CSharpTutorials
             List<Block> block = new List<Block>();
             List<Room> room = new List<Room>();
             List<Equipment> equipment = new List<Equipment>();
-            List<Equipment> repair = new List<Equipment>();
             List<Person> person = new List<Person>();
             List<Dormboss> dormboss = new List<Dormboss>();
             List<Student> student = new List<Student>();
@@ -1634,7 +1920,7 @@ namespace CSharpTutorials
                 switch (x.KeyChar)
                 {
                     case '1':
-                        Login(user, dorm, block, room, equipment, repair, person, dormboss, student, blockboss);
+                        Login(user, dorm, block, room, equipment, person, dormboss, student, blockboss);
                         break;
                     case '2':
                         signup(user);
