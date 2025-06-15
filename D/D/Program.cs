@@ -101,9 +101,9 @@ namespace CSharpTutorials
             get { return c; }
         }
         public List<string> equipments { set; get; }
-        public List<string> residentialstudents { set; get; }
-        public string block { set; get; }
-        public Room(int number, int level, int capacity, List<string> equipments, List<string> residentialstudents, string block)
+        public List<Student> residentialstudents { set; get; }
+        public Block block { set; get; }
+        public Room(int number, int level, int capacity, List<string> equipments, List<Student> residentialstudents, Block block)
         {
             this.number = number;
             this.level = level;
@@ -117,7 +117,7 @@ namespace CSharpTutorials
             Console.WriteLine($"number : {number} | level : {level} | capacity : {capacity} | block : {block}");
             Console.Write("equipments : "); foreach (string i in equipments) Console.Write($"| {i} | ");
             Console.WriteLine();
-            Console.Write("residentialstudents : "); foreach (string i in residentialstudents) Console.Write($"| {i} | ");
+            Console.Write("residentialstudents : "); foreach (Student i in residentialstudents) Console.Write($"| {i} | ");
             Console.WriteLine();
         }
         public override bool Equals(object obj)
@@ -131,7 +131,7 @@ namespace CSharpTutorials
     }
     public class Equipment
     {
-        public string[] belongings { set; get; }
+        public string belonging { set; get; }
         public int number { set; get; }
         public int n
         {
@@ -140,12 +140,12 @@ namespace CSharpTutorials
         }
         public string belongingid { set; get; }
         public string status { set; get; }
-        public string room { set; get; }
+        public int room { set; get; }
         public string student { set; get; }
-        public Equipment(string[] belongings, int number, string belongingid, string status, string room, string student)
+        public Equipment(string belonging, int number, string belongingid, string status, int room, string student)
         {
-            this.belongings = belongings;
-            this.number = n;
+            this.belonging = belonging;
+            this.number = number;
             this.belongingid = belongingid;
             this.status = status;
             this.room = room;
@@ -153,15 +153,14 @@ namespace CSharpTutorials
         }
         public virtual void info()
         {
-            Console.WriteLine($"number : {number} | belongingid : {belongingid} | status : {status} | room : {room} | student : {student}");
-            Console.Write("equipments : "); foreach (string i in belongings) Console.Write($"| {i} | ");
+            Console.WriteLine($"belonging : {belonging} | number : {number} | belongingid : {belongingid} | status : {status} | room : {room} | student : {student}");
             Console.WriteLine();
         }
         public override bool Equals(object obj)
         {
             if (obj is Equipment other)
             {
-                return this.belongings == other.belongings && this.number == other.number && this.belongingid == other.belongingid && this.status == other.status && this.room == other.room && this.student == other.student;
+                return this.belonging == other.belonging && this.number == other.number && this.belongingid == other.belongingid && this.status == other.status;
             }
             return false;
         }
@@ -610,7 +609,7 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void blockmanagement(List<Block> block, List<Student> students, List<Blockboss> blockbosses)
+        static void blockmanagement(List<Block> block, List<Student> student, List<Blockboss> blockboss)
         {
             while (true)
             {
@@ -643,20 +642,28 @@ namespace CSharpTutorials
                         int c = Convert.ToInt32(Console.ReadLine());
                         Console.WriteLine("Enter blockbosse's fullname : ");
                         string d = Console.ReadLine();
-                        Console.WriteLine("Enter number of room : ");
-                        int e = Convert.ToInt32(Console.ReadLine());
-                        Console.WriteLine("Enter list of rooms : ");
-                        string h = Console.ReadLine();
-                        int[] f = Array.ConvertAll(h.Split(' '), int.Parse);
-                        Block g = new Block(a, b, c, d, f);
-                        if (block.Contains(g))
+                        Student A = new Student(d, null, null, null, null, 0, 0, null, null);
+                        if (student.Contains(A))
                         {
-                            Console.WriteLine("This block is already registered!");
+                            Console.WriteLine("Enter number of room : ");
+                            int e = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("Enter list of rooms : ");
+                            string h = Console.ReadLine();
+                            int[] f = Array.ConvertAll(h.Split(' '), int.Parse);
+                            Block G = new Block(a, b, c, d, f);
+                            if (block.Contains(G))
+                            {
+                                Console.WriteLine("This block is already registered!");
+                            }
+                            else
+                            {
+                                block.Add(G);
+                                Console.WriteLine("Block successfully added!");
+                            }
                         }
                         else
                         {
-                            block.Add(g);
-                            Console.WriteLine("Block successfully added!");
+                            Console.WriteLine("The blockboss isn't registered as a student!");
                         }
                         Console.ReadKey();
                         break;
@@ -666,7 +673,7 @@ namespace CSharpTutorials
                         Console.Clear();
                         Console.WriteLine("Enter name : ");
                         a = Console.ReadLine();
-                        g = new Block(a, 0, 0, null, null);
+                        Block g = new Block(a, 0, 0, null, null);
                         if (!block.Contains(g))
                         {
                             Console.WriteLine("Block doesn't exist!");
@@ -691,17 +698,25 @@ namespace CSharpTutorials
                             b = Convert.ToInt32(Console.ReadLine());
                             Console.WriteLine("Enter room number");
                             c = Convert.ToInt32(Console.ReadLine());
-                            Console.WriteLine("Enter blockboss");
+                            Console.WriteLine("Enter blockbosse's fullname");
                             d = Console.ReadLine();
-                            Console.WriteLine("Enter number of room");
-                            e = Convert.ToInt32(Console.ReadLine());
-                            Console.WriteLine("Enter list of rooms");
-                            h = Console.ReadLine();
-                            f = Array.ConvertAll(h.Split(' '), int.Parse);
-                            g = new Block(a, b, c, d, f);
-                            block.Remove(g);
-                            block.Add(g);
-                            Console.WriteLine("Block info successfully changed!");
+                            A = new Student(d, null, null, null, null, 0, 0, null, null);
+                            if (student.Contains(A))
+                            {
+                                Console.WriteLine("Enter number of room");
+                                int e = Convert.ToInt32(Console.ReadLine());
+                                Console.WriteLine("Enter list of rooms");
+                                string h = Console.ReadLine();
+                                int[] f = Array.ConvertAll(h.Split(' '), int.Parse);
+                                Block G = new Block(a, b, c, d, f);
+                                block.Remove(G);
+                                block.Add(G);
+                                Console.WriteLine("Block info successfully changed!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("The blockboss isn't registered as a student!");
+                            }
                         }
                         else
                         {
@@ -725,7 +740,6 @@ namespace CSharpTutorials
                             }
                         Console.WriteLine();
                         Console.ReadKey();
-
                         break;
                     case '5':
                         return;
@@ -1470,7 +1484,28 @@ namespace CSharpTutorials
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
-
+                        Console.WriteLine("How many items are you adding ? ");
+                        int A = Convert.ToInt32(Console.ReadLine());
+                        for (int i = 0; i < A; i++)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Enter belonging name : ");
+                            string a = Console.ReadLine();
+                            Console.WriteLine("Enter Part number : ");
+                            int b = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("Enter belonging id : ");
+                            string c = Console.ReadLine();
+                            Console.WriteLine("Enter belonging status : ");
+                            string d = Console.ReadLine();
+                            Console.WriteLine("Enter room number : ");
+                            int e = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("Enter owner(student) name : ");
+                            string f = Console.ReadLine();
+                            Equipment B = new Equipment(a, b, c, d, e, f);
+                            equipment.Add(B);
+                            Console.WriteLine("Item added to the list!");
+                            Console.ReadKey();
+                        }
                         break;
                     case '2':
                         Console.BackgroundColor = ConsoleColor.Black;
@@ -1624,5 +1659,6 @@ namespace CSharpTutorials
 /*
 
 
+                        
 
 */
