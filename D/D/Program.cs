@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using static System.Reflection.Metadata.BlobBuilder;
-using System.Net;
-using System.Xml.Linq;
-using System.Reflection.Emit;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Collections;
 namespace CSharpTutorials
 {
     public class User
@@ -62,12 +57,12 @@ namespace CSharpTutorials
     }
     public class Block
     {
-        public string name { set; get; }
+        public int name { set; get; }
         public int level { set; get; }
         public int roomno { set; get; }
         public string blockboss { set; get; }
-        public int[] rooms { set; get; }
-        public Block(string name, int level, int roomno, string blockboss, int[] rooms)
+        public List<Room> rooms { set; get; }
+        public Block(int name, int level, int roomno, string blockboss, List<Room> rooms)
         {
             this.name = name;
             this.level = level;
@@ -78,7 +73,7 @@ namespace CSharpTutorials
         public virtual void info()
         {
             Console.WriteLine($"name : {name} | level : {level} | roomno : {roomno} | blockboss : {blockboss}");
-            Console.Write("rooms : "); foreach (int i in rooms) Console.Write($"| {i} | ");
+            Console.Write("rooms : "); foreach (Room i in rooms) i.info();
             Console.WriteLine();
         }
         public override bool Equals(object obj)
@@ -102,8 +97,8 @@ namespace CSharpTutorials
         }
         public List<string> equipments { set; get; }
         public List<Student> residentialstudents { set; get; }
-        public Block block { set; get; }
-        public Room(int number, int level, int capacity, List<string> equipments, List<Student> residentialstudents, Block block)
+        public int block { set; get; }
+        public Room(int number, int level, int capacity, List<string> equipments, List<Student> residentialstudents, int block)
         {
             this.number = number;
             this.level = level;
@@ -127,6 +122,22 @@ namespace CSharpTutorials
                 return this.number == other.number;
             }
             return false;
+        }
+        public virtual void Turn(List<Room> room, Room other)
+        {
+            foreach (Room e in room)
+            {
+                if (e.block == other.block)
+                {
+                    other.number = e.number;
+                    other.level = e.level;
+                    other.capacity = e.capacity;
+                    other.equipments = e.equipments;
+                    other.block = e.block;
+                    return;
+                }
+            }
+            Console.WriteLine($"Student hasn't been registered!");
         }
     }
     public class Equipment
@@ -352,7 +363,7 @@ namespace CSharpTutorials
     }
     class Program
     {
-        static async void Login(List<User> user, List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
+        static async void Login(List<User> user, List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
         {
             while (true)
             {
@@ -378,7 +389,7 @@ namespace CSharpTutorials
                 }
                 if (user.Contains(temp))
                 {
-                    managementpage(dorm, block, room, equipment, person, dormboss, student, blockboss);
+                    managementpage(dorm, block, room, equipment, dormboss, student, blockboss);
                     break;
                 }
                 else
@@ -429,7 +440,7 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void managementpage(List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
+        static void managementpage(List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
         {
             while (true)
             {
@@ -466,16 +477,16 @@ namespace CSharpTutorials
                         dormmanagement(dorm);
                         break;
                     case '2':
-                        blockmanagement(block, student, blockboss);
+                        blockmanagement(block, student, blockboss, room);
                         break;
                     case '3':
-                        personalmanagement(student, dormboss, blockboss);
+                        personalmanagement(student, dormboss, blockboss, room);
                         break;
                     case '4':
                         belongingsmanagement(equipment, room, student);
                         break;
                     case '5':
-                        viewreport(dorm, block, room, equipment, person, dormboss, student, blockboss);
+                        viewreport(dorm, block, room, equipment, dormboss, student, blockboss);
                         break;
                     case '6':
                         return;
@@ -626,7 +637,7 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void blockmanagement(List<Block> block, List<Student> student, List<Blockboss> blockboss)
+        static void blockmanagement(List<Block> block, List<Student> student, List<Blockboss> blockboss, List<Room> room)
         {
             while (true)
             {
@@ -651,36 +662,71 @@ namespace CSharpTutorials
                 {
                     case '1':
                         Console.Clear();
-                        Console.WriteLine("Enter name : ");
-                        string a = Console.ReadLine();
+                        Console.WriteLine("Enter block number : ");
+                        int a = Convert.ToInt32(Console.ReadLine());
                         Console.WriteLine("Enter floor number : ");
                         int b = Convert.ToInt32(Console.ReadLine());
-                        Console.WriteLine("Enter room number : ");
+                        Console.WriteLine("Enter number of rooms : ");
                         int c = Convert.ToInt32(Console.ReadLine());
-                        Console.WriteLine("Enter blockbosse's fullname : ");
-                        string d = Console.ReadLine();
-                        Student A = new Student(d, null, null, null, null, 0, 0, null, null);
-                        if (student.Contains(A))
+                        Console.WriteLine("Enter floor number : ");
+                        int j = Convert.ToInt32(Console.ReadLine());
+                        Room B = new Room(c, j, 6, null, null, a);
+                        if (!room.Contains(B))
                         {
-                            Console.WriteLine("Enter number of room : ");
-                            int e = Convert.ToInt32(Console.ReadLine());
-                            Console.WriteLine("Enter list of rooms : ");
-                            string h = Console.ReadLine();
-                            int[] f = Array.ConvertAll(h.Split(' '), int.Parse);
-                            Block G = new Block(a, b, c, d, f);
-                            if (block.Contains(G))
+                            Console.WriteLine("Enter blockbosse's fullname : ");
+                            string d = Console.ReadLine();
+                            Student A = new Student(d, null, null, null, null, 0, 0, null, null);
+                            if (student.Contains(A))
                             {
-                                Console.WriteLine("This block is already registered!");
+                                List<Room> f = new List<Room>();
+                                for (int i = 0; i < b; i++)
+                                {
+                                    Console.WriteLine("Enter room number : ");
+                                    int aa = Convert.ToInt32(Console.ReadLine());
+                                    Console.WriteLine("Enter room floor : ");
+                                    int bb = Convert.ToInt32(Console.ReadLine());
+                                    Room vv = new Room(aa, bb, 6, null, null, a);
+                                    if (f.Contains(vv))
+                                    {
+                                        Console.WriteLine("This room has already been registered!");
+                                    }
+                                    else
+                                    {
+                                        f.Add(vv);
+                                        Console.WriteLine();
+                                        Console.WriteLine("Room successfully added!");
+                                    }
+                                }
+                                Block G = new Block(a, b, c, d, f);
+                                if (block.Contains(G))
+                                {
+                                    if (room.Contains(B))
+                                    {
+                                        Console.WriteLine("This room has already been registered!");
+                                        Console.WriteLine();
+                                        Console.WriteLine("This block is already registered!");
+                                    }
+                                    else
+                                    {
+                                        room.Add(B);
+                                        Console.WriteLine("Room successfully added and This block has already been registered!");
+                                    }
+                                }
+                                else
+                                {
+                                    room.Add(B);
+                                    block.Add(G);
+                                    Console.WriteLine("Block successfully added!");
+                                }
                             }
                             else
                             {
-                                block.Add(G);
-                                Console.WriteLine("Block successfully added!");
+                                Console.WriteLine("The blockboss isn't registered as a student!");
                             }
                         }
                         else
                         {
-                            Console.WriteLine("The blockboss isn't registered as a student!");
+                            Console.WriteLine("This room has already been registered!");
                         }
                         Console.ReadKey();
                         break;
@@ -689,14 +735,22 @@ namespace CSharpTutorials
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
                         Console.WriteLine("Enter name : ");
-                        a = Console.ReadLine();
+                        a = Convert.ToInt32(Console.ReadLine());
                         Block g = new Block(a, 0, 0, null, null);
+                        Room k = new Room(0, 0, 0, null, null, a);
                         if (!block.Contains(g))
                         {
                             Console.WriteLine("Block doesn't exist!");
                         }
                         else
                         {
+                            foreach (Room r in room)
+                            {
+                                if (r.block == a)
+                                {
+                                    room.Remove(r);
+                                }
+                            }
                             block.Remove(g);
                             Console.WriteLine("Block successfully removed!");
                         }
@@ -707,24 +761,38 @@ namespace CSharpTutorials
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
                         Console.WriteLine("Enter name : ");
-                        a = Console.ReadLine();
+                        a = Convert.ToInt32(Console.ReadLine());
                         g = new Block(a, 0, 0, null, null);
                         if (block.Contains(g))
                         {
-                            Console.WriteLine("Enter floor number");
+                            Console.WriteLine("Enter floor number : ");
                             b = Convert.ToInt32(Console.ReadLine());
-                            Console.WriteLine("Enter room number");
+                            Console.WriteLine("Enter number of rooms : ");
                             c = Convert.ToInt32(Console.ReadLine());
-                            Console.WriteLine("Enter blockbosse's fullname");
-                            d = Console.ReadLine();
-                            A = new Student(d, null, null, null, null, 0, 0, null, null);
+                            Console.WriteLine("Enter blockbosse's fullname : ");
+                            string d = Console.ReadLine();
+                            Student A = new Student(d, null, null, null, null, 0, 0, null, null);
                             if (student.Contains(A))
                             {
-                                Console.WriteLine("Enter number of room");
-                                int e = Convert.ToInt32(Console.ReadLine());
-                                Console.WriteLine("Enter list of rooms");
-                                string h = Console.ReadLine();
-                                int[] f = Array.ConvertAll(h.Split(' '), int.Parse);
+                                List<Room> f = new List<Room>();
+                                for (int i = 0; i < b; i++)
+                                {
+                                    Console.WriteLine("Enter room number : ");
+                                    int aa = Convert.ToInt32(Console.ReadLine());
+                                    Console.WriteLine("Enter room floor : ");
+                                    int bb = Convert.ToInt32(Console.ReadLine());
+                                    Room vv = new Room(aa, bb, 6, null, null, a);
+                                    if (f.Contains(vv))
+                                    {
+                                        Console.WriteLine("This room has already been registered!");
+                                    }
+                                    else
+                                    {
+                                        f.Add(vv);
+                                        Console.WriteLine();
+                                        Console.WriteLine("Room successfully added!");
+                                    }
+                                }
                                 Block G = new Block(a, b, c, d, f);
                                 block.Remove(G);
                                 block.Add(G);
@@ -771,7 +839,7 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void personalmanagement(List<Student> student, List<Dormboss> dormboss, List<Blockboss> blockboss)
+        static void personalmanagement(List<Student> student, List<Dormboss> dormboss, List<Blockboss> blockboss, List<Room> room)
         {
 
             while (true)
@@ -796,13 +864,13 @@ namespace CSharpTutorials
                 switch (x.KeyChar)
                 {
                     case '1':
-                        Dormboss(dormboss);
+                        Dormboss(dormboss, student, blockboss, room);
                         break;
                     case '2':
-                        Blockboss(blockboss);
+                        Blockboss(blockboss, student, dormboss, room);
                         break;
                     case '3':
-                        Student(student);
+                        Student(student, blockboss, dormboss, room);
                         break;
                     case '4':
                         return;
@@ -814,7 +882,7 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void Dormboss(List<Dormboss> dormboss)
+        static void Dormboss(List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss, List<Room> room)
         {
             while (true)
             {
@@ -848,7 +916,7 @@ namespace CSharpTutorials
                         }
                         else
                         {
-                            Console.WriteLine("Enter dormboss id : ");
+                            Console.WriteLine("Enter personal id : ");
                             string b = Console.ReadLine();
                             Console.WriteLine("Enter phone number :");
                             string c = Console.ReadLine();
@@ -891,7 +959,7 @@ namespace CSharpTutorials
                         g = new Dormboss(a, null, null, null, null, null);
                         if (dormboss.Contains(g))
                         {
-                            Console.WriteLine("Enter dormboss id : ");
+                            Console.WriteLine("Enter personal id : ");
                             string b = Console.ReadLine();
                             Console.WriteLine("Enter phone number :");
                             string c = Console.ReadLine();
@@ -911,7 +979,6 @@ namespace CSharpTutorials
                             Console.WriteLine("Dormboss hasn't been registered!");
                         }
                         Console.ReadKey();
-
                         break;
                     case '4':
                         Console.BackgroundColor = ConsoleColor.Black;
@@ -945,7 +1012,7 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void Blockboss(List<Blockboss> blockboss)
+        static void Blockboss(List<Blockboss> blockboss, List<Student> student, List<Dormboss> dormboss, List<Room> room)
         {
             while (true)
             {
@@ -974,7 +1041,8 @@ namespace CSharpTutorials
                         Console.WriteLine("Enter fullname : ");
                         string a = Console.ReadLine();
                         Blockboss l = new Blockboss(a, null, null, null, null, 0, 0, null, null, null);
-                        if (blockboss.Contains(l))
+                        Student m = new Student(a, null, null, null, null, 0, 0, null, null);
+                        if (blockboss.Contains(l) && student.Contains(m))
                         {
                             Console.WriteLine("This blockboss is already registered!");
                         }
@@ -1021,7 +1089,12 @@ namespace CSharpTutorials
                             Console.WriteLine("Enter rank : ");
                             string j = Console.ReadLine();
                             l = new Blockboss(a, b, c, d, k, e, f, g, h, j);
+                            m = l;
                             blockboss.Add(l);
+                            if (!student.Contains(m))
+                            {
+                                student.Add(m);
+                            }
                             Console.WriteLine("Blockboss successfully added!");
                         }
                         Console.ReadKey();
@@ -1052,7 +1125,8 @@ namespace CSharpTutorials
                         Console.WriteLine("Enter fullname : ");
                         a = Console.ReadLine();
                         l = new Blockboss(a, null, null, null, null, 0, 0, null, null, null);
-                        if (blockboss.Contains(l))
+                        m = new Student(a, null, null, null, null, 0, 0, null, null);
+                        if (blockboss.Contains(l) || student.Contains(m))
                         {
                             Console.WriteLine("Enter personal id : ");
                             string b = Console.ReadLine();
@@ -1095,7 +1169,10 @@ namespace CSharpTutorials
                             Console.WriteLine("Enter rank : ");
                             string j = Console.ReadLine();
                             l = new Blockboss(a, b, c, d, k, e, f, g, h, j);
+                            m = new Student(a, b, c, d, k, e, f, g, h);
+                            student.Remove(m);
                             blockboss.Remove(l);
+                            student.Add(m);
                             blockboss.Add(l);
                             Console.WriteLine("Blockboss info successfully changed!");
                         }
@@ -1136,7 +1213,7 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void Student(List<Student> student)
+        static void Student(List<Student> student, List<Blockboss> blockboss, List<Dormboss> dormboss, List<Room> room)
         {
             while (true)
             {
@@ -1228,6 +1305,7 @@ namespace CSharpTutorials
                         Console.WriteLine("Enter fullname");
                         a = Console.ReadLine();
                         l = new Student(a, null, null, null, null, 0, 0, null, null);
+                        Blockboss m = new Blockboss(a, null, null, null, null, 0, 0, null, null, null);
                         if (!student.Contains(l))
                         {
                             Console.WriteLine("Student hasn't been registered!");
@@ -1235,10 +1313,10 @@ namespace CSharpTutorials
                         else
                         {
                             student.Remove(l);
+                            blockboss.Remove(m);
                             Console.WriteLine("Student successfully removed!");
                         }
                         Console.ReadKey();
-
                         break;
                     case '3':
                         Console.BackgroundColor = ConsoleColor.Black;
@@ -1356,7 +1434,7 @@ namespace CSharpTutorials
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
-                        Change(student);
+                        Change(student, room);
                         break;
                     case '8':
                         return;
@@ -1371,7 +1449,7 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void Change(List<Student> student)
+        static void Change(List<Student> student, List<Room> room)
         {
             while (true)
             {
@@ -1766,7 +1844,7 @@ namespace CSharpTutorials
                             i.info();
                         }
                         Console.WriteLine();
-                        Console.WriteLine("Enter the belonging's details that you want to reassign to another owner(student) : ");
+                        Console.WriteLine("Enter the belonging's details that you want to change the status of : ");
                         Console.WriteLine();
                         Console.WriteLine("Enter belonging name : ");
                         z = Console.ReadLine();
@@ -1774,9 +1852,33 @@ namespace CSharpTutorials
                         y = Convert.ToInt32(Console.ReadLine());
                         Console.WriteLine("Enter belonging id : ");
                         w = Console.ReadLine();
-                        Console.WriteLine("Enter status : ");
-                        string t = Console.ReadLine();
-                        C = new Equipment(z, y, w, t, 0, null);
+                        Console.WriteLine("Choose status : ");
+                        Console.WriteLine("1.ok.");
+                        Console.WriteLine("2.broken.");
+                        Console.WriteLine();
+                        string Zz = null;
+                        while (true)
+                        {
+                            var a = Console.ReadKey();
+                            Console.WriteLine();
+                            if (a.KeyChar == '1')
+                            {
+                                Zz = "ok";
+                                break;
+                            }
+                            else if (a.KeyChar == '2')
+                            {
+                                Zz = "broken";
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("try again!");
+                                Console.ReadKey();
+                            }
+                            Console.WriteLine();
+                        }
+                        C = new Equipment(z, y, w, Zz, 0, null);
                         if (equipment.Contains(C))
                         {
                             C.Find(equipment, C);
@@ -1831,7 +1933,7 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void viewreport(List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Person> person, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
+        static void viewreport(List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
         {
 
             while (true)
@@ -1859,19 +1961,28 @@ namespace CSharpTutorials
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
+                        Console.WriteLine("All stationary students : ");
+                        Console.WriteLine();
+                        foreach (Student s in student)
+                        {
+                            s.info();
+                        }
 
+                        Console.ReadKey();
                         break;
                     case '2':
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
 
+                        Console.ReadKey();
                         break;
                     case '3':
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Clear();
 
+                        Console.ReadKey();
                         break;
                     case '4':
                         return;
@@ -1896,7 +2007,6 @@ namespace CSharpTutorials
             List<Block> block = new List<Block>();
             List<Room> room = new List<Room>();
             List<Equipment> equipment = new List<Equipment>();
-            List<Person> person = new List<Person>();
             List<Dormboss> dormboss = new List<Dormboss>();
             List<Student> student = new List<Student>();
             List<Blockboss> blockboss = new List<Blockboss>();
@@ -1920,7 +2030,7 @@ namespace CSharpTutorials
                 switch (x.KeyChar)
                 {
                     case '1':
-                        Login(user, dorm, block, room, equipment, person, dormboss, student, blockboss);
+                        Login(user, dorm, block, room, equipment, dormboss, student, blockboss);
                         break;
                     case '2':
                         signup(user);
