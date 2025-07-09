@@ -10,11 +10,6 @@ namespace CSharpTutorials
             this.username = username;
             this.password = password;
         }
-        public virtual void info()
-        {
-            Console.WriteLine($" | username : {username} | password : {password} |");
-            Console.WriteLine();
-        }
         public override bool Equals(object obj)
         {
             if (obj is User other)
@@ -41,10 +36,20 @@ namespace CSharpTutorials
         }
         public virtual void info()
         {
-            Console.WriteLine($" | name : {name} | address : {address} | capacity : {capacity} | dormboss : {dormboss} |");
+            Console.WriteLine($" Dorm : | name : {name} | address : {address} | capacity : {capacity} | dormboss : {dormboss} |");
+            Console.WriteLine(" | blocks || |");
+            Console.WriteLine(" |        || |");
+            Console.WriteLine(" |        \\/ |");
             if (blocks != null)
             {
-                Console.WriteLine("blocks : "); foreach (Block i in blocks) Console.WriteLine($" | {i.name} |");
+                foreach (Block i in blocks)
+                {
+                    Console.WriteLine($" | {i.name} |");
+                }
+            }
+            else
+            {
+                Console.WriteLine(" | There are no registered blocks for this dorm! |");
             }
             Console.WriteLine();
         }
@@ -72,6 +77,18 @@ namespace CSharpTutorials
             }
             Console.WriteLine($"Dorm hasn't been registered!");
         }
+        public virtual void DeleteBlock(List<Dorm> dorm, Block other)
+        {
+            foreach (Dorm e in dorm)
+            {
+                if (e.blocks.Contains(other))
+                {
+                    e.blocks.Remove(other);
+                    return;
+                }
+            }
+            Console.WriteLine($"Dorm hasn't been registered!");
+        }
     }
     public class Block
     {
@@ -79,28 +96,40 @@ namespace CSharpTutorials
         public int level { set; get; }
         public int roomno { set; get; }
         public string blockboss { set; get; }
+        public string dorm { set; get; }
         public List<Room> rooms { set; get; }
-        public Block(int name, int level, int roomno, string blockboss, List<Room> rooms)
+        public Block(int name, int level, int roomno, string blockboss, string dorm, List<Room> rooms)
         {
             this.name = name;
             this.level = level;
             this.roomno = roomno;
             this.blockboss = blockboss;
+            this.dorm = dorm;
             this.rooms = rooms;
         }
         public virtual void info()
         {
-            Console.WriteLine($" | name : {name} | floor : {level} | roomno : {roomno} | blockboss : {blockboss} |");
+            Console.WriteLine($" Block : | name : {name} | number of floors : {level} | number of rooms : {roomno} | blockboss : {blockboss} | related dorm : {dorm} |");
+            Console.WriteLine(" | rooms || |");
+            Console.WriteLine(" |       \\/ |");
             if (rooms != null)
             {
-                Console.WriteLine("rooms : "); foreach (Room i in rooms) Console.WriteLine($" | Room number : {i.number} & Room floor : {i.level} |");
+                foreach (Room i in rooms)
+                {
+                    Console.WriteLine($" | Room number : {i.number} & Room floor : {i.level} |");
+                }
             }
+            else
+            {
+                Console.WriteLine(" | There are no registered rooms! |");
+            }
+            Console.WriteLine();
         }
         public override bool Equals(object obj)
         {
             if (obj is Block other)
             {
-                return this.name == other.name;
+                return this.name == other.name && this.dorm == other.dorm;
             }
             return false;
         }
@@ -108,7 +137,7 @@ namespace CSharpTutorials
         {
             foreach (Block e in block)
             {
-                if (e.name == other.name)
+                if (e.name == other.name && e.dorm == other.dorm)
                 {
                     other.name = e.name;
                     other.level = e.level;
@@ -119,6 +148,19 @@ namespace CSharpTutorials
                 }
             }
             Console.WriteLine($"Block hasn't been registered!");
+        }
+        public virtual void DeleteRoom(List<Room> room, List<Room> other)
+        {
+            foreach (Room e in room)
+            {
+                foreach (Room r in other)
+                {
+                    if (e.number == r.number)
+                    {
+                        room.Remove(r);
+                    }
+                }
+            }
         }
     }
     public class Room
@@ -145,17 +187,34 @@ namespace CSharpTutorials
         }
         public virtual void info()
         {
-            Console.WriteLine($" | number : {number} | level : {level} | capacity : {capacity} | block : {block} |");
+            Console.WriteLine($" Room : | number : {number} | level : {level} | capacity : {capacity} | block : {block} |");
+            Console.WriteLine(" | equipments || |");
+            Console.WriteLine(" |            \\/ |");
             if (equipments != null)
             {
-                Console.WriteLine("equipments : "); foreach (Equipment i in equipments) Console.WriteLine($" | {i.belonging} |");
-                Console.WriteLine();
+                foreach (Equipment i in equipments)
+                {
+                    Console.WriteLine($" | {i.belonging} |");
+                }
+            }
+            else
+            {
+                Console.WriteLine(" | There are no registered equipments! |");
             }
             if (residentialstudents != null)
             {
-                Console.WriteLine("residentialstudents : "); foreach (Student i in residentialstudents) Console.WriteLine($" | {i.fullname} |");
-                Console.WriteLine();
+                Console.WriteLine(" | residentialstudents || | ");
+                Console.WriteLine(" |                     \\/ |");
+                foreach (Student i in residentialstudents)
+                {
+                    Console.WriteLine($" | {i.fullname} |");
+                }
             }
+            else
+            {
+                Console.WriteLine(" | There are no registered residential student! |");
+            }
+            Console.WriteLine();
         }
         public override bool Equals(object obj)
         {
@@ -180,6 +239,19 @@ namespace CSharpTutorials
                 }
             }
             Console.WriteLine($"Room hasn't been registered!");
+        }
+        public virtual void Delete(List<Room> room, List<Room> other)
+        {
+            foreach (Room e in room)
+            {
+                foreach (Room r in other)
+                {
+                    if (e.number == r.number)
+                    {
+                        room.Remove(r);
+                    }
+                }
+            }
         }
     }
     public class Equipment
@@ -206,7 +278,7 @@ namespace CSharpTutorials
         }
         public virtual void info()
         {
-            Console.WriteLine($" | belonging : {belonging} | number : {number} | belongingid : {belongingid} | status : {status} | room : {room} | student : {student} |");
+            Console.WriteLine($" Equipment : | belonging : {belonging} | number : {number} | belongingid : {belongingid} | status : {status} | room : {room} | student : {student} |");
             Console.WriteLine();
         }
         public override bool Equals(object obj)
@@ -250,7 +322,7 @@ namespace CSharpTutorials
         }
         public virtual void info()
         {
-            Console.WriteLine($" | fullname : {fullname} | id : {id} | phonenumber : {phonenumber} | address : {address} |");
+            Console.WriteLine($" Person : | fullname : {fullname} | id : {id} | phonenumber : {phonenumber} | address : {address} |");
         }
         public override bool Equals(object obj)
         {
@@ -272,7 +344,7 @@ namespace CSharpTutorials
         }
         public override void info()
         {
-            Console.WriteLine($" | fullname : {fullname} | id : {id} | phonenumber : {phonenumber} | address : {address} | rank : {rank} | dorm : {dorm} |");
+            Console.WriteLine($" Dormboss : | fullname : {fullname} | id : {id} | phonenumber : {phonenumber} | address : {address} | rank : {rank} | dorm : {dorm} |");
             Console.WriteLine();
         }
         public override bool Equals(object obj)
@@ -318,10 +390,19 @@ namespace CSharpTutorials
         }
         public override void info()
         {
-            Console.WriteLine($" | fullname : {fullname} | id : {id} | phonenumber : {phonenumber} | address : {address} | sudentid : {studentid} | room : {room} | block : {block} | dorm : {dorm} |");
+            Console.WriteLine($" Student : | fullname : {fullname} | id : {id} | phonenumber : {phonenumber} | address : {address} | sudentid : {studentid} | room : {room} | block : {block} | dorm : {dorm} |");
+            Console.WriteLine(" | personal equipments || |");
+            Console.WriteLine(" |                     \\/ |");
             if (personalequipments != null)
             {
-                Console.WriteLine("personalequipments : "); foreach (string i in personalequipments) Console.WriteLine($"| {i} | ");
+                foreach (string i in personalequipments)
+                {
+                    Console.WriteLine($" | {i} | ");
+                }
+            }
+            else
+            {
+                Console.WriteLine(" | There are no registered personal equipments! |");
             }
             Console.WriteLine();
         }
@@ -429,11 +510,19 @@ namespace CSharpTutorials
         public override void info()
         {
             {
-                Console.WriteLine($" | fullname : {fullname} | id : {id} | phonenumber : {phonenumber} | address : {address} | sudentid : {studentid} | room : {room} | block : {block} | dorm : {dorm} |");
-                Console.WriteLine($"rank : {rank}");
+                Console.WriteLine($" Blockboss : | fullname : {fullname} | id : {id} | phonenumber : {phonenumber} | address : {address} | sudentid : {studentid} | room : {room} | block : {block} | dorm : {dorm} | rank : {rank} |");
+                Console.WriteLine(" | personal equipments || |");
+                Console.WriteLine(" |                     \\/ |");
                 if (personalequipments != null)
                 {
-                    Console.WriteLine("personalequipments : "); foreach (string i in personalequipments) Console.WriteLine($" | {i} | ");
+                    foreach (string i in personalequipments)
+                    {
+                        Console.WriteLine($" | {i} | ");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine(" | There are no registered personal equipments! |");
                 }
                 Console.WriteLine();
             }
@@ -470,7 +559,7 @@ namespace CSharpTutorials
     }
     class Program
     {
-        static async void Login(List<User> user, List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
+        static void Login(List<User> user, List<Dorm> dorm, List<Block> block, List<Room> room, List<Equipment> equipment, List<Dormboss> dormboss, List<Student> student, List<Blockboss> blockboss)
         {
             while (true)
             {
@@ -520,7 +609,7 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void signup(List<User> user)
+        static void Signup(List<User> user)
         {
             while (true)
             {
@@ -607,7 +696,7 @@ namespace CSharpTutorials
                         dormmanagement(dorm, block, dormboss);
                         break;
                     case '2':
-                        blockmanagement(block, student, blockboss, room);
+                        blockmanagement(block, student, blockboss, room, dorm);
                         break;
                     case '3':
                         personalmanagement(student, dormboss, blockboss, room, dorm);
@@ -747,7 +836,7 @@ namespace CSharpTutorials
                                                 }
                                                 else
                                                 {
-                                                    Block k = new Block(j, 0, 0, null, null);
+                                                    Block k = new Block(j, 0, 0, null, a, null);
                                                     if (!h.Contains(k))
                                                     {
                                                         h.Add(k);
@@ -775,7 +864,6 @@ namespace CSharpTutorials
                                         dorm.Add(g);
                                         Console.WriteLine();
                                         Console.WriteLine("Dorm successfully added!");
-
                                     }
                                     else
                                     {
@@ -839,7 +927,6 @@ namespace CSharpTutorials
                         {
                             Dorm s = new Dorm(a, null, 0, null, null);
                             s.Turn(dorm, s);
-
                             foreach (Block l in s.blocks)
                             {
                                 if (block.Contains(l))
@@ -931,7 +1018,7 @@ namespace CSharpTutorials
                                                 }
                                                 else
                                                 {
-                                                    Block k = new Block(j, 0, 0, null, null);
+                                                    Block k = new Block(j, 0, 0, null, a, null);
                                                     if (!h.Contains(k))
                                                     {
                                                         h.Add(k);
@@ -993,10 +1080,12 @@ namespace CSharpTutorials
                             Console.WriteLine("There are no registered dorms!");
                         }
                         else
+                        {
                             foreach (Dorm i in dorm)
                             {
                                 i.info();
                             }
+                        }
                         Console.WriteLine();
                         Console.ReadKey();
                         break;
@@ -1011,7 +1100,7 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void blockmanagement(List<Block> block, List<Student> student, List<Blockboss> blockboss, List<Room> room)
+        static void blockmanagement(List<Block> block, List<Student> student, List<Blockboss> blockboss, List<Room> room, List<Dorm> dorm)
         {
             while (true)
             {
@@ -1037,140 +1126,345 @@ namespace CSharpTutorials
                 switch (x.KeyChar)
                 {
                     case '1':
+                        string h = null;
+                        Dorm m = null;
+                        Block g = null;
                         Console.Clear();
                         Console.WriteLine("Enter block number : ");
-                        int a = Convert.ToInt32(Console.ReadLine());
-                        Block G = new Block(a, 0, 0, null, null);
-                        if (block.Contains(G))
+                        string p = Console.ReadLine();
+                        if (int.TryParse(p, out int a))
                         {
-                            Console.WriteLine("This block is already registered!");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Enter floor number : ");
-                            int b = Convert.ToInt32(Console.ReadLine());
-                            Console.WriteLine("Enter number of rooms : ");
-                            int c = Convert.ToInt32(Console.ReadLine());
-                            Console.WriteLine("Enter blockbosse's fullname : ");
-                            string d = Console.ReadLine();
-                            Student A = new Student(d, null, null, null, null, 0, 0, null, null);
-                            Blockboss C = new Blockboss(d, null, null, null, null, 0, 0, null, null, null);
-                            if (student.Contains(A) && blockboss.Contains(C))
+                            Console.WriteLine("Enter related dorm : ");
+                            h = Console.ReadLine();
+                            if (h != "")
                             {
-                                List<Room> f = new List<Room>();
-                                for (int i = 0; i < c; i++)
+                                m = new Dorm(h, null, 0, null, null);
+                                if (!dorm.Contains(m))
                                 {
-                                    Console.WriteLine("Enter room number : ");
-                                    int aa = Convert.ToInt32(Console.ReadLine());
-                                    Room B = new Room(aa, b, 6, null, null, a);
-                                    if (f.Contains(B))
+                                    Console.WriteLine("This dorm hasn't been registered!");
+                                }
+                                else
+                                {
+                                    Block G = new Block(a, 0, 0, null, h, null);
+                                    if (block.Contains(G))
                                     {
-                                        Console.WriteLine("This room has already been registered!");
-                                        i--;
+                                        Console.WriteLine("This block is already registered!");
                                     }
                                     else
                                     {
-                                        f.Add(B);
-                                        Console.WriteLine();
-                                        Console.WriteLine("Room successfully added!");
+                                        Console.WriteLine("Enter number of floors : ");
+                                        string q = Console.ReadLine();
+                                        if (int.TryParse(q, out int b))
+                                        {
+                                            Console.WriteLine("Enter number of rooms : ");
+                                            string r = Console.ReadLine();
+                                            if (int.TryParse(r, out int c))
+                                            {
+                                                Console.WriteLine("Enter blockbosse's fullname : ");
+                                                string d = Console.ReadLine();
+                                                if (d != "")
+                                                {
+                                                    Student A = new Student(d, null, null, null, null, 0, 0, null, null);
+                                                    Blockboss C = new Blockboss(d, null, null, null, null, 0, 0, null, null, null);
+                                                    if (student.Contains(A) && blockboss.Contains(C))
+                                                    {
+                                                        List<Room> f = new List<Room>();
+                                                        for (int i = 0; i < c; i++)
+                                                        {
+                                                            Console.WriteLine("Enter room number : ");
+                                                            string t = Console.ReadLine();
+                                                            if (int.TryParse(t, out int aa))
+                                                            {
+                                                                Console.WriteLine("Enter room floor : ");
+                                                                string u = Console.ReadLine();
+                                                                if (int.TryParse(u, out int bb))
+                                                                {
+                                                                    if (bb <= b && bb >= 0)
+                                                                    {
+                                                                        Room B = new Room(aa, bb, 6, null, null, a);
+                                                                        if (f.Contains(B))
+                                                                        {
+                                                                            Console.WriteLine("This room has already been registered!");
+                                                                            i--;
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            f.Add(B);
+                                                                            Console.WriteLine("Room successfully added!");
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        Console.WriteLine("This floor doesn't exist!");
+                                                                        i--;
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    Console.WriteLine("Error, try again!");
+                                                                    i--;
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                Console.WriteLine("Error, try again!");
+                                                                i--;
+                                                            }
+                                                        }
+                                                        G = new Block(a, b, c, d, h, f);
+                                                        m.Turn(dorm, m);
+                                                        if (!m.blocks.Contains(G))
+                                                        {
+                                                            m.blocks.Add(G);
+                                                            dorm.Remove(m);
+                                                            dorm.Add(m);
+                                                        }
+                                                        foreach (Room s in f)
+                                                        {
+                                                            if (!room.Contains(s))
+                                                            {
+                                                                room.Add(s);
+                                                            }
+                                                        }
+                                                        block.Add(G);
+                                                        Console.WriteLine("Block and rooms successfully added!");
+                                                    }
+                                                    else
+                                                    {
+                                                        Console.WriteLine("The blockboss isn't registered as a student!");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("Error, try again later!");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Error, try again later!");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Error, try again later!");
+                                        }
                                     }
                                 }
-                                G = new Block(a, b, c, d, f);
-                                foreach (Room r in f)
-                                {
-                                    room.Add(r);
-                                }
-                                block.Add(G);
-                                Console.WriteLine("Block and rooms successfully added!");
                             }
                             else
                             {
-                                Console.WriteLine("The blockboss isn't registered as a student!");
+                                Console.WriteLine("Error, try again later!");
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error, try again later!");
                         }
                         Console.ReadKey();
                         break;
                     case '2':
                         Console.Clear();
                         Console.WriteLine("Enter name : ");
-                        a = Convert.ToInt32(Console.ReadLine());
-                        Block g = new Block(a, 0, 0, null, null);
-                        if (!block.Contains(g))
+                        p = Console.ReadLine();
+                        if (int.TryParse(p, out a))
                         {
-                            Console.WriteLine("Block doesn't exist!");
+                            Console.WriteLine("Enter related dorm : ");
+                            h = Console.ReadLine();
+                            if (h != "")
+                            {
+                                g = new Block(a, 0, 0, null, h, null);
+                                if (!block.Contains(g))
+                                {
+                                    Console.WriteLine("Block doesn't exist!");
+                                }
+                                else
+                                {
+                                    g.Turn(block, g);
+                                    if (g.rooms != null)
+                                    {
+                                        foreach (Room v in g.rooms)
+                                        {
+                                            if (room.Contains(v))
+                                            {
+                                                room.Remove(v);
+                                            }
+                                        }
+                                    }
+                                    m = new Dorm(h, null, 0, null, null);
+                                    m.Turn(dorm, m);
+                                    if (m.blocks.Contains(g))
+                                    {
+                                        m.blocks.Remove(g);
+                                        dorm.Remove(m);
+                                        dorm.Add(m);
+                                    }
+                                    block.Remove(g);
+                                    Console.WriteLine("Block and rooms successfully removed!");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Error, try again later!");
+                            }
                         }
                         else
                         {
-                            g.Turn(block, g);
-                            foreach (Room r in g.rooms)
-                            {
-                                if (room.Contains(r))
-                                {
-                                    room.Remove(r);
-                                }
-                            }
-                            block.Remove(g);
-                            Console.WriteLine("Block and rooms successfully removed!");
+                            Console.WriteLine("Error, try again later!");
                         }
                         Console.ReadKey();
                         break;
                     case '3':
                         Console.Clear();
-                        Console.WriteLine("Enter name : ");
-                        a = Convert.ToInt32(Console.ReadLine());
-                        g = new Block(a, 0, 0, null, null);
-                        if (block.Contains(g))
+                        Console.WriteLine("Enter block number : ");
+                        p = Console.ReadLine();
+                        if (int.TryParse(p, out a))
                         {
-                            Console.WriteLine("Enter floor number : ");
-                            int b = Convert.ToInt32(Console.ReadLine());
-                            Console.WriteLine("Enter number of rooms : ");
-                            int c = Convert.ToInt32(Console.ReadLine());
-                            Console.WriteLine("Enter blockbosse's fullname : ");
-                            string d = Console.ReadLine();
-                            Student A = new Student(d, null, null, null, null, 0, 0, null, null);
-                            Blockboss C = new Blockboss(d, null, null, null, null, 0, 0, null, null, null);
-                            if (student.Contains(A) && blockboss.Contains(C))
+                            Console.WriteLine("Enter related dorm : ");
+                            h = Console.ReadLine();
+                            if (h != "")
                             {
-                                List<Room> f = new List<Room>();
-                                for (int i = 0; i < c; i++)
+                                m = new Dorm(h, null, 0, null, null);
+                                if (!dorm.Contains(m))
                                 {
-                                    Console.WriteLine("Enter room number : ");
-                                    int aa = Convert.ToInt32(Console.ReadLine());
-                                    Room vv = new Room(aa, b, 6, null, null, a);
-                                    if (f.Contains(vv))
+                                    Console.WriteLine("This dorm hasn't been registered!");
+                                }
+                                else
+                                {
+                                    Block G = new Block(a, 0, 0, null, h, null);
+                                    if (block.Contains(G))
                                     {
-                                        Console.WriteLine("This room has already been registered!");
-                                        i--;
+                                        g = new Block(a, 0, 0, null, h, null);
+                                        g.Turn(block, g);
+                                        if (g.rooms != null)
+                                        {
+                                            foreach (Room v in g.rooms)
+                                            {
+                                                if (room.Contains(v))
+                                                {
+                                                    room.Remove(v);
+                                                }
+                                            }
+                                        }
+                                        m = new Dorm(h, null, 0, null, null);
+                                        m.Turn(dorm, m);
+                                        if (m.blocks.Contains(g))
+                                        {
+                                            m.blocks.Remove(g);
+                                            dorm.Remove(m);
+                                            dorm.Add(m);
+                                        }
+                                        block.Remove(g);
+                                        Console.WriteLine("Enter number of floors : ");
+                                        string q = Console.ReadLine();
+                                        if (int.TryParse(q, out int b))
+                                        {
+                                            Console.WriteLine("Enter number of rooms : ");
+                                            string r = Console.ReadLine();
+                                            if (int.TryParse(r, out int c))
+                                            {
+                                                Console.WriteLine("Enter blockbosse's fullname : ");
+                                                string d = Console.ReadLine();
+                                                if (d != "")
+                                                {
+                                                    Student A = new Student(d, null, null, null, null, 0, 0, null, null);
+                                                    Blockboss C = new Blockboss(d, null, null, null, null, 0, 0, null, null, null);
+                                                    if (student.Contains(A) && blockboss.Contains(C))
+                                                    {
+                                                        List<Room> f = new List<Room>();
+                                                        for (int i = 0; i < c; i++)
+                                                        {
+                                                            Console.WriteLine("Enter room number : ");
+                                                            string t = Console.ReadLine();
+                                                            if (int.TryParse(t, out int aa))
+                                                            {
+                                                                Console.WriteLine("Enter room floor : ");
+                                                                string u = Console.ReadLine();
+                                                                if (int.TryParse(u, out int bb))
+                                                                {
+                                                                    if (bb <= b && bb >= 0)
+                                                                    {
+                                                                        Room B = new Room(aa, bb, 6, null, null, a);
+                                                                        if (f.Contains(B))
+                                                                        {
+                                                                            Console.WriteLine("This room has already been registered!");
+                                                                            i--;
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            f.Add(B);
+                                                                            Console.WriteLine("Room successfully added!");
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        Console.WriteLine("This floor doesn't exist!");
+                                                                        i--;
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    Console.WriteLine("Error, try again!");
+                                                                    i--;
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                Console.WriteLine("Error, try again!");
+                                                                i--;
+                                                            }
+                                                        }
+                                                        G = new Block(a, b, c, d, h, f);
+                                                        m.Turn(dorm, m);
+                                                        if (!m.blocks.Contains(G))
+                                                        {
+                                                            m.blocks.Add(G);
+                                                            dorm.Remove(m);
+                                                            dorm.Add(m);
+                                                        }
+                                                        foreach (Room s in f)
+                                                        {
+                                                            if (!room.Contains(s))
+                                                            {
+                                                                room.Add(s);
+                                                            }
+                                                        }
+                                                        block.Add(G);
+                                                        Console.WriteLine("Block and rooms successfully added!");
+                                                    }
+                                                    else
+                                                    {
+                                                        Console.WriteLine("The blockboss isn't registered as a student!");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("Error, try again later!");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Error, try again later!");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Error, try again later!");
+                                        }
                                     }
                                     else
                                     {
-                                        f.Add(vv);
-                                        Console.WriteLine();
-                                        Console.WriteLine("Room successfully added!");
+                                        Console.WriteLine("This block hasn't been registered!");
                                     }
                                 }
-                                g.Turn(block, g);
-                                foreach (Room r in g.rooms)
-                                {
-                                    room.Remove(r);
-                                }
-                                block.Remove(g);
-                                g = new Block(a, b, c, d, f);
-                                foreach (Room r in g.rooms)
-                                {
-                                    room.Add(r);
-                                }
-                                block.Add(g);
-                                Console.WriteLine("Block and rooms info successfully changed!");
                             }
                             else
                             {
-                                Console.WriteLine("The blockboss isn't registered as a student!");
+                                Console.WriteLine("Error, try again later!");
                             }
                         }
                         else
                         {
-                            Console.WriteLine("Block hasn't been registered!");
+                            Console.WriteLine("Error, try again later!");
                         }
                         Console.ReadKey();
                         break;
@@ -1756,7 +2050,7 @@ namespace CSharpTutorials
                         Console.Clear();
                         if (student.Count == 0)
                         {
-                            Console.WriteLine("There are no registered blockbosses!");
+                            Console.WriteLine("There are no registered students!");
                         }
                         else
                         {
@@ -2360,7 +2654,7 @@ namespace CSharpTutorials
                         Login(user, dorm, block, room, equipment, dormboss, student, blockboss);
                         break;
                     case '2':
-                        signup(user);
+                        Signup(user);
                         break;
                     case '3':
                         Console.Clear();
