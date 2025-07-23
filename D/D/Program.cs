@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Security.Cryptography;
 namespace CSharpTutorials
 {
     public class User
@@ -763,7 +764,7 @@ namespace CSharpTutorials
                         Personalmanagement(student, dormboss, blockboss, room, dorm, equipment, block);
                         break;
                     case '4':
-                        Belongingsmanagement(equipment, room, student);
+                        Belongingsmanagement(equipment, room, student, blockboss);
                         break;
                     case '5':
                         Viewreport(dorm, block, room, equipment, dormboss, student, blockboss);
@@ -2568,6 +2569,7 @@ namespace CSharpTutorials
                                         }
                                     }
                                 }
+                                student.Remove(B);
                                 Console.WriteLine("Student successfully removed!");
                             }
                         }
@@ -3323,7 +3325,7 @@ namespace CSharpTutorials
                 }
             }
         }
-        static void Belongingsmanagement(List<Equipment> equipment, List<Room> room, List<Student> student)
+        static void Belongingsmanagement(List<Equipment> equipment, List<Room> room, List<Student> student, List<Blockboss> blockboss)
         {
             while (true)
             {
@@ -3358,65 +3360,6 @@ namespace CSharpTutorials
                 {
                     case '1':
                         Console.Clear();
-                        Console.WriteLine("Enter belonging name : ");
-                        string a = Console.ReadLine();
-                        Console.WriteLine("Enter Part number : ");
-                        int b = Convert.ToInt32(Console.ReadLine());
-                        Console.WriteLine("Enter belonging id : ");
-                        string c = Console.ReadLine();
-                        Console.WriteLine("Choose belonging status : ");
-                        Console.WriteLine("1.ok.");
-                        Console.WriteLine("2.broken.");
-                        Console.WriteLine();
-                        string d = null;
-                        Equipment B = new Equipment(null, 0, null, null, 0, null);
-                        while (true)
-                        {
-                            var e = Console.ReadKey();
-                            Console.WriteLine();
-                            if (e.KeyChar == '1')
-                            {
-                                d = "ok"; ;
-                                Console.WriteLine("Enter room number : ");
-                                int g = Convert.ToInt32(Console.ReadLine());
-                                Console.WriteLine("Enter owner(student) name : ");
-                                string f = Console.ReadLine();
-                                B = new Equipment(a, b, c, d, g, f);
-                                if (!equipment.Contains(B))
-                                {
-                                    equipment.Add(B);
-                                    Console.WriteLine("Item added to the list!");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("The item is already registered!");
-                                }
-                                break;
-                            }
-                            else if (e.KeyChar == '2')
-                            {
-                                d = "broken";
-                                Console.WriteLine("Enter room number : ");
-                                int g = Convert.ToInt32(Console.ReadLine());
-                                Console.WriteLine("Enter owner(student) name : ");
-                                string f = Console.ReadLine();
-                                B = new Equipment(a, b, c, d, g, f);
-                                if (!equipment.Contains(B))
-                                {
-                                    equipment.Add(B);
-                                    Console.WriteLine("Item added to the list!");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("The item is already registered!");
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("try again!");
-                            }
-                            break;
-                        }
                         Console.ReadKey();
                         break;
                     case '2':
@@ -3430,51 +3373,6 @@ namespace CSharpTutorials
                         Console.WriteLine();
                         Console.WriteLine("Enter the belonging's details that you want to reassign to another room : ");
                         Console.WriteLine();
-                        Console.WriteLine("Enter belonging name : ");
-                        string z = Console.ReadLine();
-                        Console.WriteLine("Enter Part number : ");
-                        int y = Convert.ToInt32(Console.ReadLine());
-                        Console.WriteLine("Enter belonging id : ");
-                        string w = Console.ReadLine();
-                        Console.WriteLine("Choose status : ");
-                        Console.WriteLine("1.ok.");
-                        Console.WriteLine("2.broken.");
-                        Console.WriteLine();
-                        string X = null;
-                        while (true)
-                        {
-                            var A = Console.ReadKey();
-                            Console.WriteLine();
-                            if (A.KeyChar == '1')
-                            {
-                                X = "ok";
-                                break;
-                            }
-                            else if (A.KeyChar == '2')
-                            {
-                                X = "broken";
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("try again!");
-                            }
-                        }
-                        Equipment C = new Equipment(z, y, w, X, 0, null);
-                        if (equipment.Contains(C))
-                        {
-                            Console.WriteLine("Enter room number : ");
-                            int u = Convert.ToInt32(Console.ReadLine());
-                            C.Turn(equipment, C);
-                            equipment.Remove(C);
-                            C.room = u;
-                            equipment.Add(C);
-                            Console.WriteLine("Equipment's room has been changed successfully!");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Equipment hasn't been registered!");
-                        }
                         Console.ReadKey();
                         break;
                     case '3':
@@ -3488,51 +3386,6 @@ namespace CSharpTutorials
                         Console.WriteLine();
                         Console.WriteLine("Enter the belonging's details that you want to reassign to another owner(student) : ");
                         Console.WriteLine();
-                        Console.WriteLine("Enter belonging name : ");
-                        z = Console.ReadLine();
-                        Console.WriteLine("Enter Part number : ");
-                        y = Convert.ToInt32(Console.ReadLine());
-                        Console.WriteLine("Enter belonging id : ");
-                        w = Console.ReadLine();
-                        Console.WriteLine("Choose status : ");
-                        Console.WriteLine("1.ok.");
-                        Console.WriteLine("2.broken.");
-                        Console.WriteLine();
-                        string Y = null;
-                        while (true)
-                        {
-                            var A = Console.ReadKey();
-                            Console.WriteLine();
-                            if (A.KeyChar == '1')
-                            {
-                                Y = "ok";
-                                break;
-                            }
-                            else if (A.KeyChar == '2')
-                            {
-                                Y = "broken";
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("try again!");
-                            }
-                        }
-                        C = new Equipment(z, y, w, Y, 0, null);
-                        if (equipment.Contains(C))
-                        {
-                            Console.WriteLine("Enter owner(student) name : ");
-                            string f = Console.ReadLine();
-                            C.Turn(equipment, C);
-                            equipment.Remove(C);
-                            C.student = f;
-                            equipment.Add(C);
-                            Console.WriteLine("Equipment's owner(student) name has been changed successfully!");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Equipment hasn't been registered!");
-                        }
                         Console.ReadKey();
                         break;
                     case '4':
@@ -3546,51 +3399,6 @@ namespace CSharpTutorials
                         Console.WriteLine();
                         Console.WriteLine("Enter the belonging's details that you want to reassign to another owner(student) : ");
                         Console.WriteLine();
-                        Console.WriteLine("Enter belonging name : ");
-                        z = Console.ReadLine();
-                        Console.WriteLine("Enter Part number : ");
-                        y = Convert.ToInt32(Console.ReadLine());
-                        Console.WriteLine("Enter belonging id : ");
-                        w = Console.ReadLine();
-                        Console.WriteLine("Choose status : ");
-                        Console.WriteLine("1.ok.");
-                        Console.WriteLine("2.broken.");
-                        Console.WriteLine();
-                        string Z = null;
-                        while (true)
-                        {
-                            var A = Console.ReadKey();
-                            Console.WriteLine();
-                            if (A.KeyChar == '1')
-                            {
-                                Z = "ok";
-                                break;
-                            }
-                            else if (A.KeyChar == '2')
-                            {
-                                Z = "broken";
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("try again!");
-                            }
-                        }
-                        C = new Equipment(z, y, w, Z, 0, null);
-                        if (equipment.Contains(C))
-                        {
-                            Console.WriteLine("Enter owner(student) name : ");
-                            string f = Console.ReadLine();
-                            C.Turn(equipment, C);
-                            equipment.Remove(C);
-                            C.student = f;
-                            equipment.Add(C);
-                            Console.WriteLine("Equipment's owner(student) name has been changed successfully!");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Equipment hasn't been registered!");
-                        }
                         Console.ReadKey();
                         break;
                     case '5':
@@ -3604,75 +3412,6 @@ namespace CSharpTutorials
                         Console.WriteLine();
                         Console.WriteLine("Enter the belonging's details that you want to change the status of : ");
                         Console.WriteLine();
-                        Console.WriteLine("Enter belonging name : ");
-                        z = Console.ReadLine();
-                        Console.WriteLine("Enter Part number : ");
-                        y = Convert.ToInt32(Console.ReadLine());
-                        Console.WriteLine("Enter belonging id : ");
-                        w = Console.ReadLine();
-                        Console.WriteLine("Choose status : ");
-                        Console.WriteLine("1.ok.");
-                        Console.WriteLine("2.broken.");
-                        Console.WriteLine();
-                        string Zz = null;
-                        while (true)
-                        {
-                            var A = Console.ReadKey();
-                            Console.WriteLine();
-                            if (A.KeyChar == '1')
-                            {
-                                Zz = "ok";
-                                break;
-                            }
-                            else if (A.KeyChar == '2')
-                            {
-                                Zz = "broken";
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("try again!");
-                            }
-                            Console.WriteLine();
-                        }
-                        C = new Equipment(z, y, w, Zz, 0, null);
-                        if (equipment.Contains(C))
-                        {
-                            Console.WriteLine("Choose new status : ");
-                            Console.WriteLine("1.ok.");
-                            Console.WriteLine("2.broken.");
-                            Console.WriteLine();
-                            string f = null;
-                            while (true)
-                            {
-                                var A = Console.ReadKey();
-                                Console.WriteLine();
-                                if (A.KeyChar == '1')
-                                {
-                                    f = "ok";
-                                    break;
-                                }
-                                else if (A.KeyChar == '2')
-                                {
-                                    f = "broken";
-                                    break;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("try again!");
-                                }
-                            }
-                            C.Turn(equipment, C);
-                            Equipment D = C;
-                            equipment.Remove(C);
-                            D.status = f;
-                            equipment.Add(D);
-                            Console.WriteLine("Equipment's status has been changed successfully!");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Equipment hasn't been registered!");
-                        }
                         Console.ReadKey();
                         break;
                     case '6':
@@ -3707,13 +3446,14 @@ namespace CSharpTutorials
                 Console.WriteLine("                                                                                                                  ");
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------");
                 var x = Console.ReadKey();
+                Console.Clear();
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
                 switch (x.KeyChar)
                 {
                     case '1':
                         Console.Clear();
-                        Console.WriteLine("All stationary students : ");
+                        Console.WriteLine("Stationary students list : ");
                         Console.WriteLine();
                         if (student.Count != 0)
                         {
@@ -3726,13 +3466,27 @@ namespace CSharpTutorials
                         {
                             Console.WriteLine("There are no registered students!");
                         }
-                        Console.WriteLine("All registered rooms : ");
+                        Console.WriteLine();
+                        Console.WriteLine("Registered rooms list : ");
                         Console.WriteLine();
                         if (room.Count != 0)
                         {
                             foreach (Room s in room)
                             {
                                 s.info();
+                                if (s.residentialstudents == null || s.residentialstudents.Count == 0)
+                                {
+                                    Console.WriteLine("This room is empty!");
+                                }
+                                else if (s.residentialstudents.Count == 6)
+                                {
+                                    Console.WriteLine("This room is full!");
+                                }
+                                else if (s.residentialstudents.Count < 6 && s.residentialstudents.Count > 0)
+                                {
+                                    Console.WriteLine("This room is available!");
+                                }
+                                Console.WriteLine();
                             }
                         }
                         else
@@ -3740,13 +3494,158 @@ namespace CSharpTutorials
                             Console.WriteLine("There are no registered rooms!");
                         }
                         Console.WriteLine();
+                        Console.WriteLine("Every dorm's remaining capacities : ");
+                        Console.WriteLine();
+                        if (dorm.Count != 0)
+                        {
+                            foreach (Dorm d in dorm)
+                            {
+                                Console.WriteLine($" | dorm : {d.name} | remaining capacity : {d.capacity} |");
+                                Console.WriteLine();
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("There are no registered dorms!");
+                        }
+                        Console.WriteLine();
                         Console.ReadKey();
                         break;
                     case '2':
+                        Console.Clear();
+                        Console.WriteLine("Belongings list : ");
+                        Console.WriteLine();
+                        if (equipment.Count != 0)
+                        {
+                            foreach (Equipment d in equipment)
+                            {
+                                d.info();
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("There are no registered belongings!");
+                        }
+                        Console.WriteLine();
+                        Console.WriteLine("Every room's belongings : ");
+                        Console.WriteLine();
+                        if (room.Count != 0)
+                        {
+                            foreach (Room r in room)
+                            {
+                                Console.WriteLine($" | room : {r.number} | ");
+                                if (r.equipments.Count != 0)
+                                {
+                                    foreach (string s in r.equipments)
+                                    {
+                                        Console.WriteLine($" | {s} | ");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("There are no registered belongings in this room!");
+                                }
+                                Console.WriteLine();
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("There are no registered rooms!");
+                        }
+                        Console.WriteLine();
+                        Console.WriteLine("Every student's belongings : ");
+                        Console.WriteLine();
+                        if (student.Count != 0)
+                        {
+                            foreach (Student t in student)
+                            {
+                                Console.WriteLine($" | student : {t.fullname} | ");
+                                if (t.personalequipments.Count != 0)
+                                {
+                                    foreach (Equipment s in t.personalequipments)
+                                    {
+                                        Console.WriteLine($" | {s.belonging} | {s.number} | {s.belongingid} | ");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("There are no registered belongings for this student!");
+                                }
+                                Console.WriteLine();
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("There are no registered students!");
+                        }
+                        Console.WriteLine();
+                        Console.WriteLine("Every belonging that needs to be repaired : ");
+                        Console.WriteLine();
+                        int a = 0;
+                        foreach (Equipment e in equipment)
+                        {
+                            if (e.status == "broken")
+                            {
+                                a++;
+                            }
+                        }
+                        if (a != 0)
+                        {
+                            foreach (Equipment e in equipment)
+                            {
+                                if (e.status == "broken")
+                                {
+                                    e.info();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("There are no equipments that need repair!");
+                        }
                         Console.ReadKey();
                         break;
                     case '3':
                         Console.Clear();
+                        Console.WriteLine("Every belonging that needs to be repaired : ");
+                        Console.WriteLine();
+                        a = 0;
+                        foreach (Equipment e in equipment)
+                        {
+                            if (e.status == "broken")
+                            {
+                                a++;
+                            }
+                        }
+                        if (a != 0)
+                        {
+                            foreach (Equipment e in equipment)
+                            {
+                                if (e.status == "broken")
+                                {
+                                    e.info();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("There are no equipments that need repair!");
+                        }
+                        Console.WriteLine();
+                        Console.WriteLine("Students list : ");
+                        Console.WriteLine();
+                        if (student.Count != 0)
+                        {
+                            foreach (Student s in student)
+                            {
+                                s.info();
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("There are no registered students!");
+                        }
+                        Console.WriteLine();
                         Console.ReadKey();
                         break;
                     case '4':
