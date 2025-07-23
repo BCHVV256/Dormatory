@@ -39,6 +39,8 @@ namespace CSharpTutorials
         }
         public virtual void info()
         {
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------");
+            Console.WriteLine("|                                                                                                      |");
             Console.WriteLine($" Dorm : | name : {name} | address : {address} | capacity : {capacity} | dormboss : {dormboss} |");
             Console.WriteLine(" | blocks || |");
             Console.WriteLine(" |        || |");
@@ -54,6 +56,8 @@ namespace CSharpTutorials
             {
                 Console.WriteLine(" | There are no registered blocks for this dorm! |");
             }
+            Console.WriteLine("|                                                                                                      |");
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------");
             Console.WriteLine();
         }
         public override bool Equals(object obj)
@@ -110,6 +114,8 @@ namespace CSharpTutorials
         }
         public virtual void info()
         {
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------");
+            Console.WriteLine("|                                                                                                      |");
             Console.WriteLine($" Block : | name : {name} | number of floors : {level} | number of rooms : {roomno} | blockboss : {blockboss} | related dorm : {dorm} |");
             Console.WriteLine(" | rooms || |");
             Console.WriteLine(" |       \\/ |");
@@ -124,6 +130,8 @@ namespace CSharpTutorials
             {
                 Console.WriteLine(" | There are no registered rooms! |");
             }
+            Console.WriteLine("|                                                                                                      |");
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------");
             Console.WriteLine();
         }
         public override bool Equals(object obj)
@@ -188,6 +196,8 @@ namespace CSharpTutorials
         }
         public virtual void info()
         {
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------");
+            Console.WriteLine("|                                                                                                      |");
             Console.WriteLine($" Room : | number : {number} | level : {level} | capacity : {capacity} | block : {block} |");
             Console.WriteLine(" | equipments || |");
             Console.WriteLine(" |            \\/ |");
@@ -217,6 +227,8 @@ namespace CSharpTutorials
                 Console.WriteLine(" | There are no registered residential student! |");
             }
             Console.WriteLine();
+            Console.WriteLine("|                                                                                                      |");
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------");
         }
         public override bool Equals(object obj)
         {
@@ -300,7 +312,11 @@ namespace CSharpTutorials
         }
         public virtual void info()
         {
+            Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            Console.WriteLine("|                                                                                                                                                          |");
             Console.WriteLine($" Equipment : | belonging : {belonging} | number : {number} | belongingid : {belongingid} | status : {status} | room : {room} | student : {student} |");
+            Console.WriteLine("|                                                                                                                                                          |");
+            Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------------------------------------");
             Console.WriteLine();
         }
         public override bool Equals(object obj)
@@ -343,7 +359,12 @@ namespace CSharpTutorials
         }
         public virtual void info()
         {
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------");
+            Console.WriteLine("|                                                                                                      |");
             Console.WriteLine($" Person : | fullname : {fullname} | id : {id} | phonenumber : {phonenumber} | address : {address} |");
+            Console.WriteLine("|                                                                                                      |");
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------");
+            Console.WriteLine();
         }
         public override bool Equals(object obj)
         {
@@ -365,7 +386,11 @@ namespace CSharpTutorials
         }
         public override void info()
         {
+            Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------------------------");
+            Console.WriteLine("|                                                                                                                                                  |");
             Console.WriteLine($" Dormboss : | fullname : {fullname} | id : {id} | phonenumber : {phonenumber} | address : {address} | rank : {rank} | dorm : {dorm} |");
+            Console.WriteLine("|                                                                                                                                                  |");
+            Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------------------------");
             Console.WriteLine();
         }
         public override bool Equals(object obj)
@@ -410,6 +435,8 @@ namespace CSharpTutorials
         }
         public override void info()
         {
+            Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            Console.WriteLine("|                                                                                                                                                           |");
             Console.WriteLine($" Student : | fullname : {fullname} | id : {id} | phonenumber : {phonenumber} | address : {address} | sudentid : {studentid} | room : {room} | block : {block} | dorm : {dorm} |");
             Console.WriteLine(" | personal equipments || |");
             Console.WriteLine(" |                     \\/ |");
@@ -424,6 +451,8 @@ namespace CSharpTutorials
             {
                 Console.WriteLine(" | There are no registered personal equipments! |");
             }
+            Console.WriteLine("|                                                                                                                                                           |");
+            Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------------------------------------");
             Console.WriteLine();
         }
         public override bool Equals(object obj)
@@ -528,6 +557,8 @@ namespace CSharpTutorials
         public override void info()
         {
             {
+                Console.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------------");
+                Console.WriteLine("|                                                                                                                                                    |");
                 Console.WriteLine($" Blockboss : | fullname : {fullname} | id : {id} | phonenumber : {phonenumber} | address : {address} | sudentid : {studentid} | room : {room} | block : {block} | dorm : {dorm} | rank : {rank} |");
                 Console.WriteLine(" | personal equipments || |");
                 Console.WriteLine(" |                     \\/ |");
@@ -542,6 +573,8 @@ namespace CSharpTutorials
                 {
                     Console.WriteLine(" | There are no registered personal equipments! |");
                 }
+                Console.WriteLine("|                                                                                                                                                    |");
+                Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------------------------------");
                 Console.WriteLine();
             }
         }
@@ -4252,7 +4285,4 @@ namespace CSharpTutorials
         }
     }
 }
-
-/*
-
-*/
+/**/
